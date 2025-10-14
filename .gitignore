@@ -1,0 +1,86 @@
+# Python cache and build files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# uv cache
+.uv_cache/
+.uv/
+
+# FastAPI / Uvicorn logs
+*.log
+
+# Byte-compiled / compiled C extensions
+*.pyc
+*.pyo
+*.pyd
+
+# Testing & coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+*.cover
+*.hypothesis/
+pytestdebug.log
+
+# IDE / editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Mypy / type checker
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Local databases / state
+*.db
+*.sqlite
+*.sqlite3
+
+# Redis dump
+dump.rdb
+appendonly.aof
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Docker
+docker-compose.override.yml
+*.txt
+*.json
+
+chroma_db/
