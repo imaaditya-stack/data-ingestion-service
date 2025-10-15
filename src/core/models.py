@@ -114,35 +114,3 @@ class QueryConfig(BaseModel):
             embedding=EmbeddingConfig(provider="openai", model=embedding_model),
             llm=LLMConfig(provider="openai", model=llm_model),
         )
-
-
-# Legacy - kept for backwards compatibility
-class PipelineConfig(BaseModel):
-    """Legacy configuration - use IngestionConfig or QueryConfig instead"""
-
-    embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)
-    llm: LLMConfig = Field(default_factory=LLMConfig)
-    vector_store: VectorStoreConfig = Field(default_factory=VectorStoreConfig)
-    chunking: ChunkingConfig = Field(default_factory=ChunkingConfig)
-
-    class Config:
-        """Pydantic config"""
-
-        validate_assignment = True
-
-    @classmethod
-    def create_default(cls) -> "PipelineConfig":
-        """Create default configuration"""
-        return cls()
-
-    @classmethod
-    def create_openai(
-        cls,
-        embedding_model: str = "text-embedding-3-small",
-        llm_model: str = "gpt-4o-mini",
-    ) -> "PipelineConfig":
-        """Create configuration for OpenAI providers"""
-        return cls(
-            embedding=EmbeddingConfig(provider="openai", model=embedding_model),
-            llm=LLMConfig(provider="openai", model=llm_model),
-        )
