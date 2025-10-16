@@ -1,0 +1,201 @@
+"id","PRODUCT_NAME","PRODUCT_DESCRIPTION","MIN_PRICE","MAX_PRICE","SELLER_id","CATEGORY","DESCRIPTION_OF_CATEGORY","CATEGORY_ID","CREATED_AT","UPDATED_AT"
+2,Busbx,Ubwhx,,,6,Electronic,,5,"2025-06-30 08:47:03.350457","2025-06-30 08:49:35.216112"
+5,Digital  camera,"Digital camera. A digital camera is an electronic device used to capture and store digital images and videos. It typically has a lens, a sensor, and a memory",,,6,Electronic,,5,"2025-06-30 09:00:48.671946","2025-07-21 07:29:13.882492"
+7,headphones,"With Mic:Yes
+BEAST Mode: Experience lag-free high-quality gaming with low latency of up to 50 ms. Visuals align with impactful audio for realistic action.","2000","2500",12,Electronic,,5,"2025-07-03 10:33:06.311146","2025-07-03 10:33:06.311181"
+8,Samsung Tv,"Samsung 80 cm (32 Inch) HD Ready LED Smart
+
+Tizen TV with Bezel-Free Design |
+
+PurColor |
+
+Hyper
+
+Real Picture Engine |
+
+Triple Protection |
+
+SmartThings
+
+App Support
+
+TV Key |
+
+Connect Share(HDD) |",,,12,Electronic,,5,"2025-07-10 10:52:32.481657","2025-07-10 10:52:32.481724"
+9,Cameras,Teyh,,,12,Electronic,,5,"2025-07-11 08:57:32.188102","2025-07-11 09:05:21.332913"
+10,Cameras,Canon EOS 77D 24.2MP DSLR Camera with the Canon 18-55mm lens,,,12,Electronic,,5,"2025-07-11 09:06:08.952310","2025-09-16 04:05:36.475842"
+11,Stuffed Animal Elephant toy,"DearJoy Big Size Fibre Filled Stuffed Animal Elephant Soft Toy for Kids of Plush Hugging Soft Toy for Kids boy Girl Birthday Gift (60 cm, Grey Color",,,16,Gift & Toys,,2,"2025-07-21 06:47:21.333749","2025-10-15 11:58:38.207386"
+12,Toys R Us Avigo Rechargeabl,"Toys R Us Avigo Rechargeable 12V Battery Operated Ride on Car Jeep with Music, Led Lights. Jeep Battery Operated Ride On  (Red)",,,16,Gift & Toys,,2,"2025-07-21 09:19:19.303058","2025-10-15 11:59:12.611095"
+13,Saarsthi Hub,Building networking smooth with saarathi application,,,29,IT Services,"",25,"2025-07-22 10:53:30.547128","2025-07-22 10:53:30.547168"
+14,Website development,For all networking groups we can create for you dynamic & attractive website for your group,,,29,IT Services,"",25,"2025-07-22 10:58:14.208548","2025-07-22 10:58:14.208582"
+15,Online Marketing courses,"offering online courses in areas like SEO, social media marketing, content marketing, and more",,,38,Digital Marketing,"",26,"2025-07-30 12:05:16.114453","2025-10-15 09:30:18.982330"
+16,Laptops,cv,"1500","2000",12,Gift & Toys,,2,"2025-08-26 05:09:31.852315","2025-09-16 04:06:04.341743"
+17,Cameras  ne 2,Hu,,,12,Electronic,,5,"2025-09-19 12:04:15.946886","2025-09-19 12:05:22.432551"
+18,Your product,Product  description,,,43,Information & Technology,,6,"2025-09-24 08:51:37.979201","2025-09-24 08:51:37.979235"
+19,Vuvu,Gnf,,,43,Information & Technology,,6,"2025-09-24 09:43:25.482213","2025-09-24 09:43:25.482253"
+20,Hehf,"4r",,,6,Gift & Toys,,2,"2025-09-26 06:11:01.845441","2025-09-29 10:07:04.841326"
+21,By neha,Ban,,,6,Gift & Toys,,2,"2025-09-26 11:32:53.854211","2025-09-29 10:07:14.359016"
+22,Personal Loan,"Flexible personal loans with quick approval, minimal documentation, and attractive interest rates. Ideal for travel, wedding, home renovation, or emergency expenses.",,,36,Finance,,20,"2025-10-15 05:54:48.237842","2025-10-15 05:54:48.237884"
+23,Credit Card,"Enjoy secure and rewarding transactions with cashback offers, reward points, and zero annual fee options. Designed for both shopping and travel needs.",,,36,Finance,,20,"2025-10-15 05:56:50.793436","2025-10-15 05:56:50.793483"
+24,Savings Account,"Open a high-interest savings account with instant online access, free debit card, and seamless fund transfers. Grow your money while keeping it safe.",,,36,Finance,,20,"2025-10-15 05:58:35.551682","2025-10-15 05:58:35.551726"
+25,Mutual Fund Investment,"Diversify your investments with expert-managed mutual funds. Choose from equity, debt, or hybrid funds to match your risk appetite and goals.",,,36,Finance,,20,"2025-10-15 06:01:25.606328","2025-10-15 06:01:25.606373"
+26,Hxd,Ggg,,,36,Finance,,20,"2025-10-15 06:38:11.232971","2025-10-15 06:38:28.796204"
+27,Personal Loan with Low Interes,"Get instant approval for personal loans up to $25,000. Flexible repayment options and low interest rates.",,,36,Finance,,20,"2025-10-15 06:46:22.876916","2025-10-15 06:46:22.876972"
+28,Professional Tax Filing Servic,"Certified tax experts offering accurate and timely filing for individuals and small businesses.
+Price: $150 per filing",,,36,Finance,,20,"2025-10-15 06:47:16.933650","2025-10-15 06:47:16.933695"
+29,Investment Planning & Portfoli,"Expert financial advisors help you grow and protect your wealth through smart investments.
+Price: $200 (consultation fee)",,,36,Finance,,20,"2025-10-15 06:48:15.335669","2025-10-15 06:48:15.335712"
+30,Small Business Accounting & Bo,"Affordable bookkeeping and payroll management for startups and small businesses.
+Price: $100/month",,,36,Finance,,20,"2025-10-15 06:49:26.871345","2025-10-15 06:49:26.871390"
+31,Credit Score Improvement Servi,"Learn how to invest safely in Bitcoin, Ethereum, and emerging crypto assets with expert guidance.
+Price: $100 per session",,,36,Finance,,20,"2025-10-15 06:50:23.355809","2025-10-15 06:50:23.355865"
+32,Life & Health Insurance Plans,"Compare and choose the best life and health insurance policies tailored to your needs and budget.
+Price: Starts from $30/month",,,36,Finance,,20,"2025-10-15 06:51:00.121781","2025-10-15 06:51:00.121828"
+33,Corporate Financial Audit Serv,"Reliable auditing and compliance solutions for medium and large enterprises by certified CPAs.
+Price: $500/project",,,36,Finance,,20,"2025-10-15 06:51:57.742036","2025-10-15 06:51:57.742089"
+34,Real Estate Investment Consult,"Get expert advice on profitable real estate investments, ROI analysis, and property management.
+Price: $250 per consultation",,,36,Finance,,20,"2025-10-15 06:54:32.309846","2025-10-15 06:54:32.309902"
+35,Business Loan for Startups,"Fast approval for new business loans up to $100,000. Ideal for entrepreneurs and small business owners.
+Price:15000",,,36,Finance,,20,"2025-10-15 06:59:22.055346","2025-10-15 06:59:22.055400"
+36,Retirement Savings & Pension P,"Secure your future with expert retirement and pension strategies customized to your goals.
+Price: $180 per session",,,36,Finance,,20,"2025-10-15 07:01:12.207978","2025-10-15 07:01:12.208052"
+37,Mortgage Advisory & Home Loan,"Compare mortgage rates from top banks and get help with loan approval and documentation.
+Price: $0 (Commission-based)",,,36,Finance,,20,"2025-10-15 07:03:03.813831","2025-10-15 07:03:03.813884"
+38,Bookkeeping Software Setup & T,"We set up and train your staff on QuickBooks, Xero, and Tally for efficient accounting.
+Price: $120 per setup",,,36,Finance,,20,"2025-10-15 07:04:32.432475","2025-10-15 07:04:32.432517"
+39,Debt Consolidation & Financial,"Simplify your finances with debt consolidation and personalized budgeting plans.
+Price: $90 per session",,,36,Finance,,20,"2025-10-15 07:06:22.545988","2025-10-15 07:06:22.546049"
+40,Handmade Teddy Bears,"Adorable handmade teddy bears made from premium fabric. Perfect for kids and gifting.
+Price: $25",,,6,Gift & Toys,,2,"2025-10-15 07:11:55.179925","2025-10-15 07:11:55.179980"
+41,Keychains,Acrylic and metal keychains personalized with your name or logo. Great for birthdays and events.,,,6,Gift & Toys,,2,"2025-10-15 07:13:24.534071","2025-10-16 06:24:11.725602"
+42,Remote Control Car,"High-speed RC car with rechargeable battery and LED lights. Suitable for ages 6+.
+Price: $45",,,6,Gift & Toys,,2,"2025-10-15 07:15:11.941486","2025-10-15 07:15:11.941527"
+43,Birthday Gift Hampers,"Curated gift hampers with chocolates, candles, and greeting cards for all occasions.
+Price: $60",,,6,Gift & Toys,,2,"2025-10-15 07:16:56.740304","2025-10-15 07:16:56.740344"
+44,Wooden Puzzle Set for Kids,"Eco-friendly wooden puzzles to improve kids logic and motor skills.
+Price: 400",,,6,Gift & Toys,,2,"2025-10-15 07:19:33.023552","2025-10-15 07:19:33.023595"
+45,Unisex Bump & Go Ocean Ship,"The Bump & Go Ocean Ship with Light and Music is an exciting and interactive toy designed to bring the thrill of the ocean to playtime. This ship features a ""bump and go"" action, meaning it will change direction when it bumps into an obstacle, creating an engaging and unpredictable play experience.",,,6,Gift & Toys,,2,"2025-10-15 08:52:17.132838","2025-10-15 08:52:17.132882"
+46,nisex Musical Toy Rainbow,Diy Rainbow Scratch Art: Let Your Child Discover The Scratch Art With The Craft Kit!This Isn'T Just Any Craft Kit; It'S An Interactive Way To Bring Rainbow Colors To Life With A Simple Scratch And Reveal Process,,,6,Gift & Toys,,2,"2025-10-15 08:54:17.036832","2025-10-15 08:54:17.036877"
+47,Super Spinning Launcher,"Key Features:
+
+Spin the gyro, it will give out beautiful flash light and music
+Twist the handle three times (no more than three times) and press the button and off it goes
+Made of ABS plastic with smooth surface and curves, non-toxic and no burr
+And these UFO spinning tops are durable enough to",,,6,Gift & Toys,,2,"2025-10-15 08:58:44.110629","2025-10-15 08:58:44.110675"
+48,"Musical Toy Kids Toys, Child A","We CTM  Toys' a Proprietorship Based Firm, Engaged As The Foremost Wholesaler And Trader of SuAper Power Toy Truck, Kids Remote Control Car, Super Double Flip Car, Fidget Spinner, Toy Guitars, Mini Helicopter Toy And Many More Such Products.",,,6,Gift & Toys,,2,"2025-10-15 09:00:21.711927","2025-10-15 09:00:21.711999"
+49,Plastic Toy Fan unicorn toys k,"Super Power Toy Truck, Kids Remote Control Car, Super Double Flip Car, Fidget Spinner, Toy Guitars, Mini Helicopter Toy And Many More Such Products.",,,6,Gift & Toys,,2,"2025-10-15 09:03:31.003379","2025-10-15 09:03:31.003443"
+50,"Kids Plastic Toys, Child Age","Our product range includes a wide range of Plastic Cricket Ball, Plastic Hanuman Gada and Kids Toys.",,,6,Gift & Toys,,2,"2025-10-15 09:06:26.868806","2025-10-15 09:06:26.868847"
+51,"Kitty Themed Car Toy, Child Ag","Keep your child entertained with the press and go toy it is made from an excellent material and is designed to fit the little hands of your child. These toy cars are friction powered and no battery required. This vehicle toy Set adopt the advanced drive system and can run far and fast, Kitty design",,,6,Gift & Toys,,2,"2025-10-15 09:09:24.717799","2025-10-15 09:09:24.717850"
+52,"Bhonga Plastic Toy, For Cheeri","Bhonga Plastic Toy  Colorful and fun musical toy bugle designed for kids  entertainment and learning. Made from not toxic child-safe plastic perfect for safe play. Ideal for pretend band play school functions and festive gifts Lightweight, durable, and easy to use for toddlers and young childre",,,6,Gift & Toys,,2,"2025-10-15 09:11:38.228109","2025-10-15 09:11:38.228148"
+53,Unisex Plastic Kids Toy Polipe,Large lightweight elements easily fit together to make Pollipetti Construction Set in always different sequences. Suitable for the growing needs of children.                                        Product Dimension:L.7. X W.6. H.7,,,6,Gift & Toys,,2,"2025-10-15 09:13:02.970977","2025-10-15 09:13:02.971030"
+54,Doraemon Drummer Kids Toy,"Plastic Doraemon Drummer Kids Toy:
+
+Adorable sky blue Doraemon drummer toy designed for toddlers aged 0-3 years to explore rhythm and music.
+
+Made from durable plastic material with a smooth powder-coated finish for a vibrant look.
+
+Perfect for home play, encouraging early development of hand-",,,6,Gift & Toys,,2,"2025-10-15 09:15:03.095446","2025-10-15 09:15:03.095495"
+55,Angry Bird Drummer Kids Toy,"Plastic Angry Bird Drummer Kids Toy:
+
+Vibrant Angry Bird drummer toy in striking red, perfect for engaging kids in rhythmic play.
+
+Made from durable plastic material with a smooth powder-coated finish for added durability.
+
+Designed for home play, encouraging musical creativity and hand-eye co",,,6,Gift & Toys,,2,"2025-10-15 09:17:29.939356","2025-10-15 09:17:29.939397"
+56,Buddyz Lemon & Spoon Toys,The Lemon and Spoon is an activity that is played by balancing a lemon on a spoon that is held by the mouth. One has to balance the lemon without dropping it and walking to the finish line just like a race. It is an easy to play game that is coupled with a lot of fun.,,,6,Gift & Toys,,2,"2025-10-15 09:19:42.368345","2025-10-15 09:19:42.368389"
+57,Telescopic Suction Cup Giraffe,"Fun And Creative: The Telescopic Tube And Cute Giraffe Men Design With Space Robot Make This A Unique And Entertaining Toy.
+
+Stress Relief: The decompression feature helps relieve stress and anxiety.
+
+Strong Suction: The suction cup base allows it to stick to any smooth surface for hands-free pl",,,6,Gift & Toys,,2,"2025-10-15 09:22:10.837130","2025-10-15 09:22:10.837172"
+58,nisex Crawling Crab Baby Toy,"ELECTRIC CRAWLING CRAB TOY: Wembley crawling crab toys for kids make your little ones tummy time fun and happy. Bright colors, sparkling lights, cheerful music, and sideways walking are right in front of babies 3+ years, attracting their attention. They love listening to musical toys for kids and ca",,,6,Gift & Toys,,2,"2025-10-15 09:23:34.415731","2025-10-15 09:23:34.415777"
+59,Unisex Crawling Baby Toy,"Incepted in the year 2022""A.K.N Traders""  is distinguished  Trader - Wholesaler/Distributoroffering an enormous consignment  of Kids Toys etc",,,6,Gift & Toys,,2,"2025-10-15 09:25:04.376295","2025-10-15 09:25:04.376348"
+60,Multicolor Glitter Rope for Ar,"Experience in design, arts and crafts enable them to reflect critically on their own work and those by others. They learn to act and think like designers and artists, working intelligently and creatively.",,,38,Digital Marketing,"",26,"2025-10-15 09:31:27.265847","2025-10-15 09:31:27.265894"
+61,Acrylic Brown Flower,"Features
+
+15mm flower-shaped acrylic piece in rich brown
+
+Plain design, ideal for jewelry and craft work
+
+Durable, lightweight, and easy to use
+
+Adds a natural touch to creative projects",,,38,Digital Marketing,"",26,"2025-10-15 09:32:36.071275","2025-10-15 09:32:36.071317"
+62,"Acrylic Handicraft Nandi Mina,","The team of expert artisans working with us offers Acrylic Sheet, which is superb excellent material to use in place of glass for windows, skylights, doors and partitions.",,,38,Digital Marketing,"",26,"2025-10-15 09:33:58.354397","2025-10-15 09:33:58.354445"
+63,Clear Acrylic Camera Decor,"Solid Acrylic Camera Home Decor
+With Brass Lens and click
+Easy to clean and maintain
+Best Gift for a House warming party or as a corporate gift
+Enhances your Decor
+Leighter weight in compare to crystal and ecomonical",,,38,Digital Marketing,"",26,"2025-10-15 09:35:13.165393","2025-10-15 09:35:13.165437"
+64,Red Acrylic lotus,"Established Year 2008 Mumbai Maharashtra. We ""Harsiddh Products Proprietorship Manufacturer And Wholesaler in Acrylic Box,Display Stand Cake Top,Display Stand",,,38,Digital Marketing,"",26,"2025-10-15 09:39:39.565395","2025-10-15 09:39:39.565439"
+65,Art & Craft Multy Colour Avai,Our clients can avail from us a wide collection of best quality Designer Kankavati. These products are made from high quality components,,,38,Digital Marketing,"",26,"2025-10-15 09:41:26.298142","2025-10-15 09:41:26.298237"
+66,Personalized Acrylic Gift Item,"We are engaged in providing a diverse range of Personalized Acrylic Gift Items that has gained immense appreciation from the clients. These are ideal to be gifted on an array of occasions such as birthdays, corporate events, anniversaries and many more. Our product is designed exactly as per the spe",,,38,Art and Crafts,,21,"2025-10-15 09:43:28.445103","2025-10-15 09:43:28.445156"
+67,White Doodle-kit animal art ki,"boost creativity and imagination
+develops fine motor skillspromote eye hand coordination
+promotes patience and perseverancereduce screen time and doodle fun color",,,38,Art and Crafts,,21,"2025-10-15 09:47:40.664637","2025-10-15 09:47:40.664694"
+68,Black Acrylic Art Craft Servic,"Art craft services provide creative solutions for individuals and businesses looking to enhance their projects with custom art and craft work. These services encompass a wide range of offerings, including custom designs, personalized gifts",,,38,Art and Crafts,,21,"2025-10-15 09:49:51.165668","2025-10-15 09:49:51.165711"
+69,Antique Black Acrylic Horse Wa,"Antique Black Acrylic Horse Wall Art, Size: 900* 369 Mm",,,38,Art and Crafts,,21,"2025-10-15 09:53:54.820744","2025-10-15 09:53:54.820787"
+70,"Wall Lippan Art, Size: Medium","Feature
+Traditional handcrafted artwork inspired by Kutch Gujarat heritage
+Made using natural clay mirrors and eco friendly materials",,,38,Art and Crafts,,21,"2025-10-15 09:59:48.150248","2025-10-15 09:59:48.150291"
+71,Fluid Drift Unsinkable Ship,"The Fluid Drift Unsinkable Ship is an innovative, cutting-edge vessel designed to revolutionize maritime safety. Utilizing advanced engineering and buoyancy technology, this ship is crafted to remain afloat even under extreme conditions, making it virtually unsinkable",,,38,Art and Crafts,,21,"2025-10-15 10:02:47.795703","2025-10-15 10:02:47.795744"
+72,CLEAR Acrylic Home Decor,"This stunning Eiffel Tower replica is expertly crafted from premium 4mm clear acrylic, standing tall at 2 feet in height. Designed with intricate lattice detailing that beautifully mimics the elegance of the original Parisian landmark",,,38,Art and Crafts,,21,"2025-10-15 10:06:08.456125","2025-10-15 10:06:08.456165"
+73,White Cotton Macrame Pars Hand,"Since 1985, we Jagdamba Lace Works are a leading multi-discipline firm that believes in quality and manufacturing of high-quality Double Braided Rope and Garments Lace. Offered products range consists of Double Braided Rope, PP Dori, and Cord Tape.",,,38,Art and Crafts,,21,"2025-10-15 10:44:31.542521","2025-10-15 10:44:31.542589"
+74,Fish Bowl Craft,We provide this product in different pattern & sizes in market. The company specializes in the said product which is very much available in best value and price. We are engaged in offering an extensive range of this product. We offer best quality of this product. We are leading dealers in offering a,,,38,Art and Crafts,,21,"2025-10-15 10:45:46.467334","2025-10-15 10:45:46.467374"
+75,Black Macrame Pars Handmade Cr,"Black Macrame Pars Handmade Craft, For personal use, Size/Dimension: 10*8 Inch",,,38,Art and Crafts,,21,"2025-10-15 10:47:38.018196","2025-10-15 10:47:38.018253"
+76,Handmade craft statue,Colors May Slightly Vary Due To Computer Screen Calibration. Size May Slightly Vary Due To Finishing. And Design May Slightly Vary Also. Handmade By Skilled Artist Beautiful Piece Of Art For Any Collection,,,38,Art and Crafts,,21,"2025-10-15 10:50:21.877908","2025-10-15 10:50:21.877954"
+77,Handcrafted Felt Duck,This is handmade felt duck with polyester blend felt and polyfill. This handcrafted in pet free and smoke free environment.,,,38,Art and Crafts,,21,"2025-10-15 10:52:08.129736","2025-10-15 10:52:08.129778"
+78,Bestco Vintage Griffith Astron,We are engaged in offering vintage Astronomical Nautical telescope  to our clients. Our range of all products is widely appreciated by our clients.,,,38,Art and Crafts,,21,"2025-10-15 10:53:46.012934","2025-10-15 10:53:46.012977"
+79,"Crystal Globe, Packaging Type","Eshani Trading provides you the best range of marble radha krishna statue, radha krishna statue & cabinet murti with effective & timely delivery.",,,38,Art and Crafts,,21,"2025-10-15 10:55:17.626439","2025-10-15 10:55:17.626486"
+80,OnePlus Pad 12 GB RAM 256 GB R,"2K Display with up to 120Hz screen refresh rate
+33W SUPERVOOC Charger in-the-box MediaTek Helio G99 Chipset
+realme UI 4.0 for Pad Dolby Atmos Quad Speaker with Hi-Res Certification
+8MP HD Camera",,,12,Electronic,,5,"2025-10-15 11:01:32.525640","2025-10-15 11:01:32.525678"
+81,Lifelong LLM486 Foot Massager,"Lifelong LLM486 Foot Massager with Vibration for Pain Relief & Improved Blood Circulation Massager  (Black)
+
+Compression is very good
+2 one sole roller available, very effective
+3 Modes, manual, directions change very effective",,,12,Electronic,,5,"2025-10-15 11:03:43.717436","2025-10-15 11:03:43.717486"
+82,"8213 Professional Hair Dryer","Time to Upgrade your hair routine with the all new Nova Professional 2200 hair dryer designed with a high performance motor for extreme velocity and maximum concentrated air flow speed. By producing high air flow at a constant temperature, this dryer protects your hair from harmful heat, provides an",,,12,Electronic,,5,"2025-10-15 11:05:57.609389","2025-10-15 11:05:57.609427"
+83,Digital Electronic Body Weight,"Note: Not Legal for Trade (Transactions / Protection) Product intended for personal use only
+
+
+Average product. After purchase, they ask for good ratings in lieu of that you get warranty of six months. Secondly product made in china",,,12,Electronic,,5,"2025-10-15 11:07:58.630093","2025-10-15 11:07:58.630136"
+84,Convertible Refrigerator,"Keeping your food items fresh for consumption is a breeze with the LG 240 L Frost-free Double-door Convertible Refrigerator. Its Smart Inverter Compressor is designed for energy-efficient performance, thereby helping you save up on electricity bills. Also, this refrigerator lets you convert its free",,,12,Electronic,,5,"2025-10-15 11:11:46.594661","2025-10-15 11:11:46.594713"
+85,Water Purifier Kenstar Black P,"This water purifier is here to ensure that you get to drink safe and purified water. It makes use of 7 stages of advanced purification so that any harmful elements in the water are properly removed. This way, you can consume safe drinking water and stay protected from water-borne diseases. Thanks to",,,12,Electronic,,5,"2025-10-15 11:13:23.023318","2025-10-15 11:13:23.023363"
+86,"TurboDrum, Smart Diagnosis","he Smart Inverter technology in this LG washing machine ensures optimal performance with minimised power usage by automatically detecting the laundry load, thus saving power. The motor in this appliance is designed to last long and is highly energy efficient, and also corrosion resistant, making it",,,12,Electronic,,5,"2025-10-15 11:15:31.193246","2025-10-15 11:15:31.193297"
+87,Ceiling Fan  with Remote 1200,"The Kenstar Snow Breeze Ceiling Fan is a stylish and energy-efficient fan designed for optimal air circulation. It features high-speed performance with aerodynamic blades, ensuring powerful airflow and uniform cooling. With a sleek design and durable build, it complements modern interiors while deli",,,12,Electronic,,5,"2025-10-15 11:18:14.742384","2025-10-15 11:18:14.742430"
+88,"3 L Instant Water Geyser","Hindware 3 L Instant Water Geyser Atlantic White and Grey
+
+Hindware Smart Appliances IMMEDIO 3 L Instant Water Geyser | High Grade SS Tank  (White, Black)",,,12,Electronic,,5,"2025-10-15 11:19:39.830210","2025-10-15 11:19:39.830259"
+89,Haier 19 L Inverter Technology,"The elegant Haier 19-L Solo Microwave is a great addition to any kitchen, with features like minimal noise, defrost capability, and energy-saving Inverter technology. Its small size (436 mm L x 328 mm B x 241 mm H) maximises the countertop area without sacrificing performance.",,,12,Electronic,,5,"2025-10-15 11:21:19.111094","2025-10-15 11:21:19.111136"
+90,Wall Lamp With Bulb,"Built in 3 colour LED Bulb with Warm White, white and natural white Glow",,,12,Electronic,,5,"2025-10-15 11:31:38.717329","2025-10-15 11:31:38.717372"
+91,Prestige 1200 W Induction Cook,"The Prestige Induction Cooktop comes with a sturdy body so that you not only have a cooking partner for years but, can also make your everyday cooking experience better. The preset Indian menu helps you cook your favourite dish perfectly, the automatic voltage regulator ensures durability, and the",,,12,Electronic,,5,"2025-10-15 11:34:13.505506","2025-10-15 11:34:13.505564"
+92,Control D Durable Compressor N,Control D Durabale Compressor Nebulizer was developed in conjunction with respiratory therapists for 1. Efficient respiratory therapy 2.Effective Medication Delivery 3.Easy Carry Handle 4.Light weight 5.Complete Nebulizer kit 6.Easy to Clean 7.Ideal for all Ages. The product can be used standing o,,,12,Electronic,,5,"2025-10-15 11:35:19.372995","2025-10-15 11:35:19.373037"
+93,Display Buetooth  Smartwatch,presents Hunter smartwatch with the largest display of 2.01inch. The watch covers your wrist and sets perfectly,,,12,Electronic,,5,"2025-10-15 11:38:04.681907","2025-10-15 11:38:04.681953"
+94,Xpresso 1000 W Dry Iron,"Worst quality product.
+Stopped working just in second use.
+Now Kenstar Customer Support is telling me to ask flipkart flr replacement and flipkart has no clue.",,,12,Electronic,,5,"2025-10-15 11:40:23.105226","2025-10-15 11:40:23.105276"
+95,"4K HD TV Video Game Wireless C","This gaming stick adapts to more than 10,000 games, comes with 23 emulators, comes with a 64G TF card, and can play more than 20,000 classic games simply by connecting a TV or monitor. The stable resolution of 1080p allows you to have a smooth and comfortable gaming experience, and the wireless co",,,12,Electronic,,5,"2025-10-15 11:42:10.515658","2025-10-15 11:42:10.515709"
+96,Clairbell Soundboard Wireless,Bluetooth speaker with SD card and USB slot Wireless Bluetooth Multimedia Speaker Wireless Speaker Ultra Loud Stereo sound  Bluetooth Speaker for Desktop PC|| Bluetooth Speaker Home Audio Perfect for home DJ audio player and DJ for outdoor activities FM  Aux TF Speaker Phone Wireless,,,12,Electronic,,5,"2025-10-15 11:44:11.551537","2025-10-15 11:44:11.551634"
+97,URBN 10000 mAh 22.5 power bank,This is the best power bank in this price range.the design is also awesome and everything is in best quality. It can charge my mobile which have 5000 mah battery 2 times i am very happy with this power bank,,,12,Electronic,,5,"2025-10-15 11:47:33.547674","2025-10-15 11:47:33.547715"
+98,SB 80 W SuperVOOC 7.3 A Wall C,"SB Power up your device in record time with this 80W SuperVOOC fast charger with cable, designed for users seeking real performance, speed, and safety. Whether you're looking for a VOOC, Dash, Warp, Dart, or SuperDart charger, this all-in-one adapter delivers powerful charging across multiple prot",,,12,Electronic,,5,"2025-10-15 11:49:10.415657","2025-10-15 11:49:10.415712"
+99,boAt Rockerz 110 with Bluetoot,"Take your tunes on the go with thewith your squad, or just relax to mellow tunes on your playlist. Additionally, you can enjoy these activities across two devices with dual pairing. Answer calls on your phone and seamlessly toggle",,,12,Electronic,,5,"2025-10-15 11:50:46.142694","2025-10-15 11:50:46.142740"
+100,OTICA Heavy-Duty Reusable Rubb,"HeavyDuty Protection: Made from high-quality latex rubber, these gloves offer robust protection against harsh detergents, cleaning chemicals, and hot water, keeping your hands safe during all chores. Durable & Long-Lasting: A thick, tearresistant construction ensures the gloves withstand frequent",,,16,Homecare,,15,"2025-10-15 12:09:18.311445","2025-10-15 12:09:18.311494"
+101,MUKHTI CARE Tara Herbal,"This capsules gives excellent reults in frozen shoulder, Knee pain , Nick Pain, Back pain, and other realted joint pains.",,,16,Homecare,,15,"2025-10-15 12:12:57.835734","2025-10-15 12:12:57.835778"
+102,Dr care Aneroid Blood Pressure,"Dr. Care Aneroid Blood Pressure Monitor Build With Imported Clock, Cuff, Bulb and Bladder. Our device attains clinical accuracy of +_ 3mmHg with a certified 300-mmHg no- pin stop manometer. The manometer also houses a clip so that it can be attached to the cuff to prevent hassle. On the other hand,",,,16,Homecare,,15,"2025-10-15 12:14:44.548236","2025-10-15 12:14:44.548280"
+103,ARXTRO Deep Clean All-in-One S,Multifunctional concentrated cleansing lotion MULTI-SURFACE USAGE SAFE: The cleaner is safe for use on most surfaces and won't leave behind residue or damage sensitive materials. FRESH SCENT: Leaves your cleaned surfaces with a pleasant and refreshing lemon scent. Multipurpose Cleaner Feature Exce,,,16,Homecare,,15,"2025-10-15 12:26:49.269449","2025-10-15 12:26:49.269492"
+104,Ashish Enterprises Kitchen Pro,Ashish Enterprises Kitchen Product Cleaner,,,16,Homecare,,15,"2025-10-15 12:30:48.069894","2025-10-15 12:30:48.069949"
+105,lique Smooth Glass and Surface,lique Smooth Glass and Surface Cleaner Liquid Spray  (500 ml),,,16,Homecare,,15,"2025-10-15 12:33:25.172371","2025-10-15 12:33:25.172420"
+106,Stripcare Premium Glass Cleane,"designed for use on glass surfaces in kitchens, bathrooms, homes, and cars",,,16,Homecare,,15,"2025-10-15 12:36:32.574661","2025-10-15 12:36:32.574705"
+107,JANAKTRADERS Window Cleaning G,"Sparkling Windows, Effortlessly. Introducing the 11mart Magnetic Window Cleaner, brought to you by JANAKTRADERS. Say goodbye to precarious balancing acts and hello to streak-free shine! This innovative cleaner combines a powerful magnetic scrub, a wet mop, and a high window squeegee, all in one. R",,,16,Homecare,,15,"2025-10-15 12:38:07.072858","2025-10-15 12:38:07.072943"
+108,Florastic Magnetic Window Clea,Please make sure your glass thickness before order and choose the correct size. Different magnetic glass cleaners should be used on glass with different thicknesses,,,16,Homecare,,15,"2025-10-15 12:39:44.060774","2025-10-15 12:39:44.060829"
+109,Godrej Aer Power Pocket Assort,Godrej Aer Power Pocket Assorted Fragrance Blocks Pocket | Bathroom Fragrance | Assorted Pack of 3  (3 x 10 g),,,16,Homecare,,15,"2025-10-15 12:42:43.030289","2025-10-15 12:42:43.030338"
+110,VVR FRESH  Surface Cleaner,VVR FRESH Homecare Product| Eco Phenyl | Surface Cleaner | Floor Cleaning | Pack of 4  (4 ml),,,16,Homecare,,15,"2025-10-15 12:44:37.636217","2025-10-15 12:44:37.636262"
+111,SHREEKRIshn Mite Spray,"SHREEKRIshn Mite Spray 100 ml for Bedding & Clothes   100 ml
+
+Effective Mite Elimination: Quickly kills and removes dust mites, bed mites, and o",,,16,Homecare,,15,"2025-10-15 12:47:13.412402","2025-10-15 12:47:13.412446"
+112,TODDLER BABY PRODUCTS Surface,"Toddler Disinfectant surface spray provides you one of the safest environment required for your toddlers and infants. Infused with Aloe Vera, Lemon and Natural Essential Oils, This product has been designed with European technology. It ensures a complete protection for you and your family.Suitable",,,16,Homecare,,15,"2025-10-15 12:48:34.392651","2025-10-15 12:48:34.392708"
+113,MAK CONSUMER PRODUCTS Hand Was,"This antibacterial hand wash effectively removes 99.9% of germs while being gentle on the skin. Enriched with glycerin, it keeps your hands soft and moisturized even with frequent use. The refreshing citrus orange fragrance leaves hands feeling fresh and clean. Suitable for all skin types and perf",,,16,Homecare,,15,"2025-10-15 12:50:27.877037","2025-10-15 12:50:27.877089"
+114,M&C liquid detergent pink,"Liquid detergent is a versatile and efficient cleaning solution designed for washing clothes. It offers powerful stain removal while being gentle on fabrics and skin. Available in concentrated formulas, liquid detergent produces low foam and is suitable for both machine and hand washing. Made with",,,16,Homecare,,15,"2025-10-15 12:52:39.070690","2025-10-15 12:52:39.070734"
+115,IFB HSR Descal Powder,IFB HSR Descal Powder 500gms(5*100gms) Multi-Fragrance Liquid Detergent  (0.5 kg),,,16,Homecare,,15,"2025-10-15 12:53:46.847710","2025-10-15 12:53:46.847753"
