@@ -49,7 +49,7 @@ class LLMConfig(BaseModel):
 class VectorStoreConfig(BaseModel):
     """Configuration for vector store"""
 
-    collection_name: str = Field(default="rag_collection")
+    collection_name: str = Field(default="networking-platform")
     persist_path: str = Field(default="./chroma_db")
 
 

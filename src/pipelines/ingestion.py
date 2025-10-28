@@ -58,7 +58,7 @@ class IngestionPipeline:
         **kwargs,
     ) -> List[Document]:
         """Load data from CSV file"""
-        return await self.loader_service.load_csv(
+        return self.loader_service.load_csv(
             csv_path=csv_path,
             text_columns=text_columns,
             encoding=encoding,
