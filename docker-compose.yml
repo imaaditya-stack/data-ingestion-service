@@ -1,0 +1,74 @@
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb
+    ports:
+      - "8001:8000" # Expose Chroma API externally if needed
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+      - ALLOW_RESET=TRUE
+    volumes:
+      - ./chroma_data:/data
+    networks:
+      - kafka-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/collections"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  data-ingestion-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: data-ingestion-service
+    hostname: data-ingestion-service
+    ports:
+      - "8000:8000"
+    environment:
+      # Kafka Configuration
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+      # Vector Store Configuration
+      VECTOR_DB_PATH: /app/data/chroma_db
+      VECTOR_DB_USE_REMOTE: true
+      VECTOR_DB_REMOTE_HOST: chromadb
+      VECTOR_DB_REMOTE_PORT: 8000
+      COLLECTION_NAME: networking-platform
+
+      # FastAPI Configuration
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      LOG_LEVEL: info
+
+      # Python Configuration
+      PYTHONUNBUFFERED: 1
+      PYTHONPATH: /app
+    volumes:
+      # Persist ChromaDB data
+      - ./src:/app/src
+    depends_on:
+      - chromadb
+    networks:
+      - kafka-net
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  kafka-net:
+    external: true
+    name: kafka-net

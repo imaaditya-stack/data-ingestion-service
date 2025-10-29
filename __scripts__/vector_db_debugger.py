@@ -6,6 +6,18 @@ Exports detailed analysis to CSV files
 import asyncio
 from collections import Counter
 from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # adjust depth if needed
+sys.path.insert(0, str(PROJECT_ROOT))
+
+
+from dotenv import load_dotenv
+
+from src.providers.vector_stores import VectorStoreFactory
+from src.config.settings import VectorStoreConfig
+
+load_dotenv()
 
 import chromadb
 import pandas as pd
@@ -15,13 +27,7 @@ from chromadb.config import Settings
 async def inspect_chromadb():
     """Inspect the contents of ChromaDB and export to CSV"""
 
-    # Initialize ChromaDB client
-    chroma_client = chromadb.PersistentClient(
-        path="./chroma_db", settings=Settings(anonymized_telemetry=False)
-    )
-
-    # Get collection
-    collection = chroma_client.get_collection("networking-platform")
+    _, collection = VectorStoreFactory.create(VectorStoreConfig())
 
     # Get all documents
     results = collection.get(include=["documents", "metadatas", "embeddings"])

@@ -1,27 +1,20 @@
-"""
-Ingestion Pipeline
-Handles data loading and ingestion into vector store
-"""
+from typing import Optional
 
-from typing import List, Optional
+from llama_index.core.ingestion import IngestionPipeline
+from llama_index.core.node_parser import SimpleNodeParser
 
-from llama_index.core import Document
-from llama_index.embeddings.ollama import OllamaEmbedding
-
-
-from src.core.models import IngestionConfig
+from src.config.settings import IngestionConfig
+from src.providers.embeddings import EmbeddingFactory
 from src.providers.vector_stores import VectorStoreFactory
-from src.services.ingestion import IngestionService
-from src.services.data_loader import DataLoaderService
 from src.utils.logger import get_logger
 
 logger = get_logger("pipelines.ingestion")
 
 
-class IngestionPipeline:
+class DataIngestionPipeline:
     """
     Pipeline for data ingestion
-    Loads data from files and stores in vector database
+    Ingests data into vector database
     """
 
     def __init__(self, config: Optional[IngestionConfig] = None):
@@ -34,98 +27,43 @@ class IngestionPipeline:
         self.config = config or IngestionConfig.create_default()
         logger.info("Initializing Ingestion Pipeline")
 
-        self.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
-        self.vector_store, self.collection = VectorStoreFactory.create(
+        # Initialize providers (only what's needed for ingestion)
+        self._embed_model = EmbeddingFactory.create(self.config.embedding)
+        self._vector_store, self._collection = VectorStoreFactory.create(
             self.config.vector_store
         )
 
-        # Initialize services
-        self.loader_service = DataLoaderService()
-        self.ingestion_service = IngestionService(
-            embed_model=self.embed_model,
-            vector_store=self.vector_store,
-            chunking_config=self.config.chunking,
-        )
+        # Create the LlamaIndex ingestion pipeline
+        self._pipeline = self._create_ingestion_pipeline()
 
         logger.info("Ingestion Pipeline initialized successfully")
 
-    async def load_csv(
-        self,
-        csv_path: str,
-        text_columns: Optional[List[str]] = None,
-        encoding: str = "utf-8",
-        delimiter: str = ",",
-        **kwargs,
-    ) -> List[Document]:
-        """Load data from CSV file"""
-        return self.loader_service.load_csv(
-            csv_path=csv_path,
-            text_columns=text_columns,
-            encoding=encoding,
-            delimiter=delimiter,
-            **kwargs,
+    def _create_ingestion_pipeline(self) -> IngestionPipeline:
+        """Create the ingestion pipeline with transformations"""
+        return IngestionPipeline(
+            transformations=[
+                SimpleNodeParser(),
+                self._embed_model,
+            ],
+            vector_store=self._vector_store,
         )
 
-    async def load_excel(
-        self,
-        excel_path: str,
-        sheet_name: Optional[str] = None,
-        text_columns: Optional[List[str]] = None,
-    ) -> List[Document]:
-        """Load data from Excel file"""
-        return await self.loader_service.load_excel(
-            excel_path=excel_path,
-            sheet_name=sheet_name,
-            text_columns=text_columns,
-        )
+    @property
+    def chroma_collection(self):
+        """Get the ChromaDB collection for direct operations"""
+        return self._collection
 
-    async def load_multiple_files(
-        self,
-        file_paths: List[str],
-        auto_detect: bool = True,
-        **kwargs,
-    ) -> List[Document]:
-        """Load data from multiple files"""
-        return await self.loader_service.load_multiple_files(
-            file_paths=file_paths,
-            auto_detect=auto_detect,
-            **kwargs,
-        )
+    @property
+    def embed_model(self):
+        """Get the embedding model"""
+        return self._embed_model
 
-    async def ingest(self, documents: List[Document]) -> List:
-        """Ingest documents into vector store"""
-        return await self.ingestion_service.ingest(documents)
+    @property
+    def vector_store(self):
+        """Get the vector store"""
+        return self._vector_store
 
-    def ingest_sync(self, documents: List[Document]) -> List:
-        """Ingest documents into vector store (sync)"""
-        return self.ingestion_service.ingest_sync(documents)
-
-    async def ingest_from_csv(
-        self,
-        csv_path: str,
-        text_columns: Optional[List[str]] = None,
-        **kwargs,
-    ) -> List:
-        """Load and ingest CSV in one step"""
-        logger.info(f"Loading and ingesting CSV: {csv_path}")
-        documents = await self.load_csv(csv_path, text_columns=text_columns, **kwargs)
-        return await self.ingest(documents)
-
-    async def ingest_from_excel(
-        self,
-        excel_path: str,
-        sheet_name: Optional[str] = None,
-        text_columns: Optional[List[str]] = None,
-    ) -> List:
-        """Load and ingest Excel in one step"""
-        logger.info(f"Loading and ingesting Excel: {excel_path}")
-        documents = await self.load_excel(
-            excel_path, sheet_name=sheet_name, text_columns=text_columns
-        )
-        return await self.ingest(documents)
-
-    async def ingest_from_files(self, file_paths: List[str], **kwargs) -> List:
-        """Load and ingest multiple files in one step"""
-        logger.info(f"Loading and ingesting {len(file_paths)} files")
-        documents = await self.load_multiple_files(file_paths, **kwargs)
-        return await self.ingest(documents)
+    @property
+    def pipeline(self):
+        """Get the LlamaIndex ingestion pipeline"""
+        return self._pipeline

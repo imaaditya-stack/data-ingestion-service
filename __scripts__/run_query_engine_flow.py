@@ -1,28 +1,24 @@
-"""
-Advanced Query Service Usage Examples
-Demonstrates granular control over retrieval pipeline
-"""
-
 import asyncio
 
 from llama_index.core.vector_stores import ExactMatchFilter, MetadataFilters
+import sys
+from pathlib import Path
 
-from src.pipelines.advanced_query import AdvancedQueryPipeline
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # adjust depth if needed
+sys.path.insert(0, str(PROJECT_ROOT))
+from src.services.query_engine import QueryEngineService
 
 
 async def example_1_simple_query():
     """Example 1: Simple one-call query (easiest)"""
-    print("\n" + "=" * 70)
-    print("EXAMPLE 1: Simple Query (One Call)")
-    print("=" * 70)
 
-    pipeline = AdvancedQueryPipeline()
+    service = QueryEngineService()
 
     # Single method call - everything automated
-    result = await pipeline.query(
-        query="Find experts in Bangalore with Engineering skills and provide the details of the person and summary of the person",
+    result = await service.query(
+        query="Which companies manufacture laser cutting systems and precision machining equipment?	",
         top_k=10,
-        score_threshold=0.5,
+        score_threshold=0.25,
         rerank=False,
     )
 
@@ -40,18 +36,18 @@ async def example_2_granular_control():
     print("EXAMPLE 2: Granular Control (Step by Step)")
     print("=" * 70)
 
-    pipeline = AdvancedQueryPipeline()
+    service = QueryEngineService()
     query = "Find experts skilled in Human Resources"
 
     # Step 1: Retrieve
     print("\n📥 STEP 1: Retrieval")
-    retrieval = await pipeline.retrieve(query=query, top_k=15)
+    retrieval = await service.retrieve(query=query, top_k=15)
     print(f"   Retrieved: {retrieval.total_retrieved} nodes")
     print(f"   Time: {retrieval.retrieval_time:.2f}s")
 
     # Step 2: Filter
     print("\n🔍 STEP 2: Filtering")
-    filtered = pipeline.filter_nodes(
+    filtered = service.filter_nodes(
         nodes=retrieval.nodes,
         score_threshold=0.6,
         custom_filter=lambda n: "Human Resources"
@@ -63,7 +59,7 @@ async def example_2_granular_control():
 
     # Step 3: Re-rank (optional)
     print("\n🔄 STEP 3: Re-ranking")
-    reranked = await pipeline.rerank_nodes(
+    reranked = await service.rerank_nodes(
         query=query, nodes=filtered.filtered_nodes, strategy="llm", top_n=5
     )
     print(f"   Re-ranked to: {len(reranked.reranked_nodes)} nodes")
@@ -72,7 +68,7 @@ async def example_2_granular_control():
 
     # Step 4: Generate response
     print("\n✨ STEP 4: Response Generation")
-    synthesis = await pipeline.synthesize_response(
+    synthesis = await service.synthesize_response(
         query=query, nodes=reranked.reranked_nodes, response_mode="compact"
     )
     print(f"   Tokens used: {synthesis.llm_usage.total_tokens}")
@@ -86,24 +82,24 @@ async def example_3_compare_strategies():
     print("EXAMPLE 3: Compare Score Thresholds & Re-ranking")
     print("=" * 70)
 
-    pipeline = AdvancedQueryPipeline()
+    service = QueryEngineService()
     query = "Find experts in Banking"
 
     # Strategy A: Low threshold, no rerank
     print("\n🔵 Strategy A: Low threshold (0.3), No re-ranking")
-    result_a = await pipeline.query(query, top_k=10, score_threshold=0.3, rerank=False)
+    result_a = await service.query(query, top_k=10, score_threshold=0.3, rerank=False)
     print(f"   Final nodes: {len(result_a.synthesis_result.source_nodes)}")
     print(f"   Tokens: {result_a.synthesis_result.llm_usage.total_tokens}")
 
     # Strategy B: High threshold, no rerank
     print("\n🟢 Strategy B: High threshold (0.7), No re-ranking")
-    result_b = await pipeline.query(query, top_k=10, score_threshold=0.7, rerank=False)
+    result_b = await service.query(query, top_k=10, score_threshold=0.7, rerank=False)
     print(f"   Final nodes: {len(result_b.synthesis_result.source_nodes)}")
     print(f"   Tokens: {result_b.synthesis_result.llm_usage.total_tokens}")
 
     # Strategy C: Medium threshold + LLM rerank
     print("\n🟡 Strategy C: Medium threshold (0.5), LLM re-ranking")
-    result_c = await pipeline.query(
+    result_c = await service.query(
         query, top_k=15, score_threshold=0.5, rerank=True, rerank_strategy="llm"
     )
     print(f"   Final nodes: {len(result_c.synthesis_result.source_nodes)}")
@@ -132,7 +128,7 @@ async def example_4_metadata_filters():
     print("EXAMPLE 4: Metadata Filtering")
     print("=" * 70)
 
-    pipeline = AdvancedQueryPipeline()
+    service = QueryEngineService()
 
     # Create metadata filters
     filters = MetadataFilters(
@@ -142,7 +138,7 @@ async def example_4_metadata_filters():
         ]
     )
 
-    result = await pipeline.query(
+    result = await service.query(
         query="Find experts with Engineering experience",
         top_k=10,
         metadata_filters=filters,
@@ -161,7 +157,7 @@ async def example_5_custom_postprocessor():
     print("EXAMPLE 5: Custom Post-Processor")
     print("=" * 70)
 
-    pipeline = AdvancedQueryPipeline()
+    service = QueryEngineService()
 
     # Define custom post-processor to boost senior experts
     def boost_senior_experts(nodes):
@@ -178,9 +174,9 @@ async def example_5_custom_postprocessor():
         return sorted(nodes, key=lambda x: x.score, reverse=True)
 
     # Add custom post-processor after filtering
-    pipeline.add_postprocessor(boost_senior_experts, stage="post_filter")
+    service.add_postprocessor(boost_senior_experts, stage="post_filter")
 
-    result = await pipeline.query(
+    result = await service.query(
         query="Find experienced consultants", top_k=10, score_threshold=0.5
     )
 

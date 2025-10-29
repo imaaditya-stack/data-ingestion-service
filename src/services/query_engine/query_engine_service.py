@@ -12,23 +12,21 @@ from llama_index.core.postprocessor import LLMRerank, SimilarityPostprocessor
 from llama_index.core.response_synthesizers import get_response_synthesizer
 from llama_index.core.schema import NodeWithScore
 from llama_index.core.vector_stores import MetadataFilters
-from llama_index.vector_stores.chroma import ChromaVectorStore
 
+from src.pipelines.query import QueryPipeline
 from src.utils.logger import get_logger
 
 from .configs import (
     FilterConfig,
+    FilterResult,
+    QueryResult,
     RerankConfig,
+    RerankResult,
     RerankStrategy,
     ResponseMode,
     RetrievalConfig,
-    SynthesisConfig,
-)
-from .models import (
-    FilterResult,
-    QueryResult,
-    RerankResult,
     RetrievalResult,
+    SynthesisConfig,
     SynthesisResult,
     TokenUsage,
 )
@@ -36,22 +34,24 @@ from .models import (
 logger = get_logger("services.advanced_query")
 
 
-class AdvancedQueryService:
+class QueryEngineService:
     """
-    Advanced query service with full granular control
+    Advanced query service - business logic orchestrator for querying.
 
-    Features:
-    - Multi-stage pipeline: Retrieve → Filter → Rerank → Synthesize
-    - Rich result objects with detailed information
-    - Configurable at every stage
-    - Both simple and granular APIs
+    Responsibilities:
+    - Query orchestration and result handling
+    - Multi-stage pipeline coordination
+    - Response synthesis
+    - Error handling
+
+    Does NOT handle:
+    - LLM/embedding model configuration (delegated to pipeline)
+    - Vector store setup (delegated to pipeline)
     """
 
     def __init__(
         self,
-        vector_store: ChromaVectorStore,
-        embed_model: BaseEmbedding,
-        llm: BaseLLM,
+        pipeline_factory: Optional[QueryPipeline] = None,
         retrieval_config: Optional[RetrievalConfig] = None,
         filter_config: Optional[FilterConfig] = None,
         rerank_config: Optional[RerankConfig] = None,
@@ -61,17 +61,22 @@ class AdvancedQueryService:
         Initialize advanced query service
 
         Args:
-            vector_store: Vector store instance
-            embed_model: Embedding model instance
-            llm: LLM instance
+            pipeline_factory: Query pipeline factory instance (creates if None)
             retrieval_config: Configuration for retrieval stage
             filter_config: Configuration for filtering stage
             rerank_config: Configuration for re-ranking stage
             synthesis_config: Configuration for synthesis stage
         """
-        self.vector_store = vector_store
-        self.embed_model = embed_model
-        self.llm = llm
+        # Create pipeline if not provided
+        if pipeline_factory is None:
+            pipeline_factory = QueryPipeline()
+
+        self.pipeline_factory = pipeline_factory
+
+        # Get components from pipeline
+        self.vector_store = pipeline_factory.vector_store
+        self.embed_model = pipeline_factory.embed_model
+        self.llm = pipeline_factory.llm
 
         # Configs
         self.retrieval_config = retrieval_config or RetrievalConfig()
@@ -81,8 +86,8 @@ class AdvancedQueryService:
 
         # Create index
         self.index = VectorStoreIndex.from_vector_store(
-            vector_store=vector_store,
-            embed_model=embed_model,
+            vector_store=self.vector_store,
+            embed_model=self.embed_model,
         )
 
         # Custom post-processors at different stages

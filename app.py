@@ -3,11 +3,22 @@ Streamlit App for Networking Platform Search
 """
 
 import asyncio
+import sys
+from pathlib import Path
 
-import streamlit as st
-from llama_index.core.vector_stores import ExactMatchFilter, MetadataFilters
+# Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.pipelines.advanced_query import AdvancedQueryPipeline
+# pylint: disable=wrong-import-position
+import streamlit as st  # pylint: disable=wrong-import-position
+from llama_index.core.vector_stores import (  # pylint: disable=wrong-import-position
+    ExactMatchFilter,
+    MetadataFilters,
+)
+
+from src.services.query_engine import (
+    QueryEngineService,
+)  # pylint: disable=wrong-import-position
 
 # -----------------------------
 # Configuration
@@ -100,8 +111,8 @@ st.markdown(
 
 
 @st.cache_resource
-def load_pipeline():
-    return AdvancedQueryPipeline()
+def load_query_service():
+    return QueryEngineService()
 
 
 def run_async(coro):
@@ -121,7 +132,7 @@ def run_async(coro):
         pass
 
 
-pipeline = load_pipeline()
+query_service = load_query_service()
 
 # -----------------------------
 # User Inputs
@@ -170,7 +181,7 @@ if search_button:
 
                 # Perform retrieval
                 retrieval_result = run_async(
-                    pipeline.retrieve(
+                    query_service.retrieve(
                         query=query_text,
                         top_k=n_results,
                         metadata_filters=metadata_filters,

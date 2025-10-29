@@ -84,3 +84,4 @@ docker-compose.override.yml
 *.json
 
 chroma_db/
+chroma_data/
