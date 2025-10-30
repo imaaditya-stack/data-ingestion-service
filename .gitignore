@@ -49,7 +49,6 @@ pytestdebug.log
 
 # Environment variables
 .env
-.env.*
 *.env
 
 # OS-specific files

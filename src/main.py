@@ -1,7 +1,3 @@
-"""
-FastAPI application with Kafka consumer for ingestion
-"""
-
 import asyncio
 from contextlib import asynccontextmanager
 from typing import Any, Dict, List
@@ -13,6 +9,10 @@ from src.config.settings import IngestionConfig, KafkaConfig
 from src.pipelines.ingestion import DataIngestionPipeline
 from src.services.kafka.kafka_consumer import KafkaConsumerService
 from src.utils.logger import get_logger
+from src.data_processors import (
+    CompanyDataProcessor,
+    CompanyMetadataProcessor,
+)
 
 logger = get_logger("api.main")
 
@@ -34,24 +34,20 @@ def kafka_event_to_document(event: Dict[str, Any]) -> Document:
     data = event.get("data", {})
     metadata = event.get("metadata", {})
 
-    # Extract text fields from data
-    text_parts = []
-    for key, value in data.items():
-        if value and key not in ["id"]:
-            text_parts.append(f"{key}: {value}")
+    text_processor = CompanyDataProcessor()
+    metadata_processor = CompanyMetadataProcessor()
 
-    text = " | ".join(text_parts) if text_parts else "No content available"
+    text = text_processor.process_row(data, list(data.keys()))
+    custom_metadata = metadata_processor.process_metadata(data, list(data.keys()))
 
-    # Create document with metadata
+    # Create document metadata (combine custom + Kafka metadata)
     doc_metadata = {
-        "tenant_id": event.get("tenant_id"),
-        "entity_type": metadata.get("entity_type", "unknown"),
-        "operation": metadata.get("operation", "unknown"),
-        "event_id": event.get("event_id"),
-        "source": event.get("source"),
+        **custom_metadata,  # From processor
+        "operation": metadata.get("operation", "update"),
+        "source": event.get("source", "kafka"),
     }
 
-    # Add entity ID to metadata
+    # Create document ID
     if "id" in data:
         doc_metadata["entity_id"] = data["id"]
         doc_id = f"{event.get('tenant_id')}_{metadata.get('entity_type')}_{data['id']}"
