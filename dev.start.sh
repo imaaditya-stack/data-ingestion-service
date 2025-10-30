@@ -5,6 +5,8 @@
 
 set -e
 
+PROJECT_NAME="ingestion_stack"
+
 echo "🚀 Starting Data Ingestion Service..."
 echo ""
 
@@ -20,7 +22,7 @@ fi
 # Start Kafka first
 echo ""
 echo "📦 Starting Kafka and Kafka UI..."
-docker compose -f docker-compose.kafka.yml up -d
+docker compose -p "$PROJECT_NAME" -f docker-compose.kafka.yml up -d
 
 # Wait for Kafka to be ready
 echo ""
@@ -28,7 +30,6 @@ echo "⏳ Waiting for Kafka to be ready..."
 max_wait=30
 wait_time=0
 
-# Try to connect to Kafka port
 while ! docker exec kafka-local /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka:29092 >/dev/null 2>&1; do
   if [ $wait_time -ge $max_wait ]; then
     echo "⚠️  Kafka taking too long to respond, but continuing..."
@@ -46,25 +47,12 @@ fi
 # Start FastAPI
 echo ""
 echo "📦 Starting FastAPI ingestion API..."
-docker compose up -d
+docker compose -p "$PROJECT_NAME" up -d
 
 echo ""
 echo "✅ All services started!"
-echo ""
-echo "📊 Services:"
-echo "  - Kafka: localhost:9092"
-echo "  - Kafka UI: http://localhost:8080"
-echo "  - API: http://localhost:8000"
-echo "  - Health: http://localhost:8000/health"
-echo ""
 
 # Show status
 echo "📋 Service Status:"
-docker compose ps 2>/dev/null || true
-docker compose -f docker-compose.kafka.yml ps
-
-echo ""
-echo "📋 Useful commands:"
-echo "  - View logs: docker compose logs -f ingestion-api"
-echo "  - View Kafka logs: docker compose -f docker-compose.kafka.yml logs -f"
-echo "  - Stop: ./stop.sh"
+docker compose -p "$PROJECT_NAME" ps 2>/dev/null || true
+docker compose -p "$PROJECT_NAME" -f docker-compose.kafka.yml ps

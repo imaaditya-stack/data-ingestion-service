@@ -24,8 +24,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: data-ingestion-service
-    hostname: data-ingestion-service
     ports:
       - "8000:8000"
     environment:
@@ -38,15 +36,6 @@ services:
       VECTOR_DB_REMOTE_HOST: chromadb
       VECTOR_DB_REMOTE_PORT: 8000
       COLLECTION_NAME: networking-platform
-
-      # FastAPI Configuration
-      API_HOST: 0.0.0.0
-      API_PORT: 8000
-      LOG_LEVEL: info
-
-      # Python Configuration
-      PYTHONUNBUFFERED: 1
-      PYTHONPATH: /app
     volumes:
       # Persist ChromaDB data
       - ./src:/app/src
