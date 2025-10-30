@@ -97,7 +97,7 @@ class VectorStoreFactory:
         vector_store = ChromaVectorStore(chroma_collection=collection)
 
         logger.info("ChromaDB initialized")
-        return vector_store, collection
+        return vector_store, collection, client
 
     @staticmethod
     def create(

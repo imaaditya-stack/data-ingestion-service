@@ -147,7 +147,7 @@ async def root():
     return {"message": "Data Ingestion API is running"}
 
 
-@app.get("/health")
-async def health_check():
-    """Health check endpoint"""
-    return {"status": "healthy", "service": "data-ingestion-api"}
+# @app.get("/health")
+# async def health_check():
+#     """Health check endpoint"""
+#     return {"status": "healthy", "service": "data-ingestion-api"}

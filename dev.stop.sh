@@ -8,13 +8,13 @@ PROJECT_NAME="ingestion_stack"
 echo "🛑 Stopping services..."
 echo ""
 
-# Stop FastAPI first
+# Stop FastAPI app only
 echo "🧱 Stopping FastAPI app..."
-docker compose -p "$PROJECT_NAME" down --remove-orphans
+docker compose -p "$PROJECT_NAME" -f docker-compose.yml down
 
-# Stop Kafka
+# Stop Kafka and Kafka UI
 echo "🧱 Stopping Kafka and Kafka UI..."
-docker compose -p "$PROJECT_NAME" -f docker-compose.kafka.yml down --remove-orphans
+docker compose -p "$PROJECT_NAME" -f docker-compose.kafka.yml down
 
 echo ""
 echo "✅ All services stopped and cleaned!"

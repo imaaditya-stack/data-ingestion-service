@@ -10,9 +10,6 @@ ENV PYTHONUNBUFFERED=1 \
 # Set work directory
 WORKDIR /app
 
-#Not required, since we're moving to 
-# RUN mkdir -p /app/data/chroma_db && chmod -R 777 /app/data/chroma_db
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -49,10 +46,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Expose port
 EXPOSE 8000
-
-# Health check - using Python's http.client instead of curl
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()" || exit 1
 
 CMD ["uv", "run", "fastapi", "dev", "src/main.py", "--host", "0.0.0.0", "--port", "8000"]
 

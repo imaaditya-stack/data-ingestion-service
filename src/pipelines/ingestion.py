@@ -29,7 +29,7 @@ class DataIngestionPipeline:
 
         # Initialize providers (only what's needed for ingestion)
         self._embed_model = EmbeddingFactory.create(self.config.embedding)
-        self._vector_store, self._collection = VectorStoreFactory.create(
+        self._vector_store, self._collection, _ = VectorStoreFactory.create(
             self.config.vector_store
         )
 

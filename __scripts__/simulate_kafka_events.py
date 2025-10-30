@@ -7,6 +7,12 @@ import asyncio
 import time
 from typing import Any, Dict
 
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # adjust depth if needed
+sys.path.insert(0, str(PROJECT_ROOT))
+
 from src.config.settings import KafkaConfig
 from src.services.kafka.kafka_producer import KafkaProducerService
 from src.utils.logger import get_logger
