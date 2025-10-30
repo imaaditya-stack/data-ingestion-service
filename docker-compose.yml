@@ -39,6 +39,8 @@ services:
     volumes:
       # Persist ChromaDB data
       - ./src:/app/src
+      # Persist Feedback Database
+      - ./database:/app/database
     depends_on:
       - chromadb
     networks:

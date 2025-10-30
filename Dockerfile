@@ -10,6 +10,9 @@ ENV PYTHONUNBUFFERED=1 \
 # Set work directory
 WORKDIR /app
 
+# [Optionally] Create database directory for SQLite
+RUN mkdir -p /app/database && chmod -R 777 /app/database
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \

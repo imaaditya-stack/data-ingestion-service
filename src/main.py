@@ -8,6 +8,7 @@ from llama_index.core import Document
 from src.config.settings import IngestionConfig, KafkaConfig
 from src.pipelines.ingestion import DataIngestionPipeline
 from src.services.kafka.kafka_consumer import KafkaConsumerService
+from src.routes.feedback import feedback
 from src.utils.logger import get_logger
 from src.data_processors import (
     CompanyDataProcessor,
@@ -136,6 +137,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.include_router(feedback.router)
 
 @app.get("/")
 async def root():
