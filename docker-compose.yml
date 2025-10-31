@@ -36,13 +36,15 @@ services:
       VECTOR_DB_REMOTE_HOST: chromadb
       VECTOR_DB_REMOTE_PORT: 8000
       COLLECTION_NAME: networking-platform
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
     volumes:
-      # Persist ChromaDB data
       - ./src:/app/src
     depends_on:
       - chromadb
     networks:
       - kafka-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
 networks:

@@ -1,9 +1,8 @@
 import os
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator
-
 from dotenv import load_dotenv
+from pydantic import BaseModel, Field, field_validator
 
 load_dotenv()
 
@@ -13,7 +12,9 @@ class EmbeddingConfig(BaseModel):
 
     provider: Literal["ollama", "openai"] = Field(default="ollama")
     model: str = Field(default="nomic-embed-text:latest")
-    base_url: Optional[str] = Field(default="http://localhost:11434")
+    base_url: Optional[str] = Field(
+        default_factory=lambda: os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    )
     api_key: Optional[str] = Field(default=None)
 
     @field_validator("base_url")

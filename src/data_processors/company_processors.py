@@ -27,22 +27,22 @@ class CompanyDataProcessor:
         text_parts = []
 
         # Company name
-        name = safe_get_text(row.get("COMPANY_NAME"))
+        name = safe_get_text(row.get("company_name"))
         if name:
             text_parts.append(f"Name: {name}")
 
         # Company description
-        description = safe_get_text(row.get("COMPANY_DESCRIPTION"), 1000)
+        description = safe_get_text(row.get("company_description"), 1000)
         if description:
             text_parts.append(f"Description: {description}")
 
         # Nature of business
-        business = safe_get_text(row.get("NATURE_OF_BUSINESS"))
+        business = safe_get_text(row.get("nature_of_business"))
         if business:
             text_parts.append(f"Nature of Business: {business}")
 
         # Company address
-        address = safe_get_text(row.get("COMPANY_ADDRESS"), 200)
+        address = safe_get_text(row.get("company_address"), 200)
         if address:
             text_parts.append(f"Address: {address}")
 
@@ -71,20 +71,21 @@ class CompanyMetadataProcessor:
         # Essential fields for company data
         essential_fields = [
             "id",
-            "COMPANY_ADDRESS",
-            "COMPANY_CREATED_AT",
-            "COMPANY_UPDATED_AT",
-            "SELLER_id",
-            "BUSINESS_TYPE_NAME",
-            "BUSINESS_TYPE_ID",
+            "company_address",
+            "company_created_at",
+            "company_updated_at",
+            "seller_id",
+            "seller_name",
+            "business_type_name",
+            "business_type_id",
         ]
 
         for field in essential_fields:
             if field in row and row[field] is not None:
                 # Truncate long values to prevent metadata bloat
                 value = str(row[field])
-                if len(value) > 100:
-                    value = value[:100] + "..."
+                if len(value) > 750:
+                    value = value[:750] + "..."
                 metadata[field] = value
 
         return metadata

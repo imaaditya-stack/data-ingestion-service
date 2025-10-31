@@ -1,7 +1,3 @@
-"""
-Base data loader with common functionality
-"""
-
 from pathlib import Path
 from typing import Callable, List, Optional
 

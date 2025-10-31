@@ -27,29 +27,24 @@ class ProductDataProcessor:
         text_parts = []
 
         # Product name
-        name = safe_get_text(row.get("PRODUCT_NAME"))
+        name = safe_get_text(row.get("product_name"))
         if name:
             text_parts.append(f"Name: {name}")
 
         # Product description
-        description = safe_get_text(row.get("PRODUCT_DESCRIPTION"), 1000)
+        description = safe_get_text(row.get("product_description"), 1000)
         if description:
             text_parts.append(f"Description: {description}")
 
         # Product category
-        category_name = safe_get_text(row.get("CATEGORY"))
+        category_name = safe_get_text(row.get("category"))
         if category_name:
             text_parts.append(f"Category: {category_name}")
 
-        # Product price (if available)
-        price = safe_get_text(row.get("PRODUCT_PRICE"), 50)
-        if price:
-            text_parts.append(f"Price: {price}")
-
         if text_parts:
             return f"Type: Product | {' | '.join(text_parts)}"
-        else:
-            return "Type: Product | No data available"
+
+        return "Type: Product | No data available"
 
 
 class ProductMetadataProcessor:
@@ -71,10 +66,12 @@ class ProductMetadataProcessor:
         # Essential fields for product data
         essential_fields = [
             "id",
-            "CREATED_AT",
-            "UPDATED_AT",
-            "SELLER_id",
-            "PRODUCT_CATEGORY_id",
+            "category",
+            "category_id",
+            "created_at",
+            "updated_at",
+            "seller_id",
+            "category_id",
         ]
 
         for field in essential_fields:

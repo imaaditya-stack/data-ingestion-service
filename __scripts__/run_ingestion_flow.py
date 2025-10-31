@@ -1,8 +1,8 @@
 import asyncio
 import os
-from typing import Any, Dict, List
 import sys
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
 
@@ -23,6 +23,7 @@ from src.data_processors import (
     ProductMetadataProcessor,
 )
 from src.services.ingestion import IngestionService
+from src.services.kafka.models import KafkaEvent
 
 
 def load_documents_from_csv(
@@ -46,10 +47,33 @@ async def demo_add_documents_for_companies():
     print("\n📥 Step 1: Adding Documents")
 
     file_path = os.path.join(
-        os.path.dirname(__file__), "../", "__data__", "__companies.csv"
+        os.path.dirname(__file__), "../", "__data__", "__companies_data.csv"
     )
     text_processor = CompanyDataProcessor()
     metadata_processor = CompanyMetadataProcessor()
+
+    # Load documents
+    documents = load_documents_from_csv(file_path, text_processor, metadata_processor)
+
+    # Initialize service
+    service = IngestionService()
+
+    # Add documents
+    nodes = await service.add_documents(documents)
+    print(f"✅ Added {len(nodes)} documents")
+
+    return documents
+
+
+async def demo_add_documents_for_products():
+    """Demo: Add new documents"""
+    print("\n📥 Step 1: Adding Documents")
+
+    file_path = os.path.join(
+        os.path.dirname(__file__), "../", "__data__", "__products_data.csv"
+    )
+    text_processor = ProductDataProcessor()
+    metadata_processor = ProductMetadataProcessor()
 
     # Load documents
     documents = load_documents_from_csv(file_path, text_processor, metadata_processor)
@@ -70,38 +94,51 @@ async def demo_update_documents_for_companies(kafka_records: List[Dict[str, Any]
 
     service = IngestionService()
 
-    # Use the same processors as in CSV loading
-    text_processor = CompanyDataProcessor()
-    metadata_processor = CompanyMetadataProcessor()
+    def to_document(topic: str, record: Dict[str, Any]) -> Document:
+        event = KafkaEvent(**record)
 
-    # Convert Kafka records to documents using the same processors
-    updated_documents: List[Document] = []
-    for record in kafka_records:
-        data = record.get("data", {})
-        metadata = record.get("metadata", {})
+        topic_lower = topic.lower()
+        if "company-events" in topic_lower:
+            text_processor = CompanyDataProcessor()
+            metadata_processor = CompanyMetadataProcessor()
+            entity_type = "company"
+        elif "product-events" in topic_lower:
+            text_processor = ProductDataProcessor()
+            metadata_processor = ProductMetadataProcessor()
+            entity_type = "product"
+        else:
+            # fallback to metadata
+            if event.entity_type == "company":
+                text_processor = CompanyDataProcessor()
+                metadata_processor = CompanyMetadataProcessor()
+            else:
+                text_processor = ProductDataProcessor()
+                metadata_processor = ProductMetadataProcessor()
+            entity_type = event.entity_type
 
-        # Use the same processors (now they accept dict)
+        data = event.data
         text = text_processor.process_row(data, list(data.keys()))
         custom_metadata = metadata_processor.process_metadata(data, list(data.keys()))
-
-        # Create document metadata (combine custom + Kafka metadata)
-        doc_metadata = {
-            **custom_metadata,  # From processor
-            "operation": metadata.get("operation", "update"),
-            "source": record.get("source", "kafka"),
+        metadata: Dict[str, Any] = {
+            **custom_metadata,
+            "operation": event.metadata.operation,
+            "source": event.source,
+            "tenant_id": event.tenant_id,
+            "entity_type": entity_type,
+            "schema_version": event.schema_version,
+            "event_id": event.event_id,
         }
+        if event.entity_id is not None:
+            metadata["entity_id"] = event.entity_id
+        doc_id = event.build_document_id()
+        return Document(text=text, metadata=metadata, id_=doc_id)
 
-        # Create document ID
-        if "id" in data:
-            doc_metadata["entity_id"] = data["id"]
-            doc_id = (
-                f"{record.get('tenant_id')}_{metadata.get('entity_type')}_{data['id']}"
-            )
-        else:
-            doc_id = f"{record.get('tenant_id')}_{record.get('event_id')}"
-
-        # Create document
-        doc = Document(text=text, metadata=doc_metadata, id_=doc_id)
+    # Convert Kafka records to documents using topic-based routing
+    updated_documents: List[Document] = []
+    for record in kafka_records:
+        # For demo, allow caller to provide topic; default to company-events
+        topic = record.get("__topic__", "company-events")
+        doc = to_document(topic, record)
         updated_documents.append(doc)
 
     # Update using filter metadata
@@ -146,6 +183,8 @@ async def main():
 
     # Step 1: Add documents from CSV
     await demo_add_documents_for_companies()
+
+    await demo_add_documents_for_products()
 
     # Step 2: Update documents from Kafka-like events
     # Mock Kafka records for update operation

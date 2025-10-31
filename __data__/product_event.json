@@ -1,0 +1,18 @@
+{
+  "event_id": "evt-1761848995632-product-74",
+  "tenant_id": "tenant_abc",
+  "timestamp": "2025-10-30T18:29:55Z",
+  "data": {
+    "id": 74,
+    "product_name": "Digital Magnetic Stirrer",
+    "product_description": "A precision-engineered digital magnetic stirrer with an integrated hot plate, designed for uniform heating and efficient mixing of chemical and biological samples. Equipped with a digital temperature and speed controller, the PS-200 ensures accuracy, stability, and safety in laboratory",
+    "category": "Constructions",
+    "category_id": 19,
+    "created_at": "2025-10-17 07:37:55.469788",
+    "updated_at": "2025-10-17 07:37:55.469827",
+    "seller_id": 64,
+    "seller_name": "Jayant Patil"
+  },
+  "metadata": { "operation": "CREATE", "source": "test-producer" },
+  "schema_version": 1
+}

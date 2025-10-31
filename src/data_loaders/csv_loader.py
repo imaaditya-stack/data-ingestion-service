@@ -4,7 +4,7 @@ Loads data from CSV files into LlamaIndex Documents
 """
 
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from llama_index.core import Document
@@ -57,6 +57,15 @@ class CSVLoader(BaseLoader):
 
         logger.info(f"Loaded {len(documents)} documents from CSV: {csv_path}")
         return documents
+
+    def get_records_from_csv(
+        self, csv_path: str, encoding: str = "utf-8", delimiter: str = ",", **kwargs
+    ) -> List[Dict[str, Any]]:
+        """
+        Get records from CSV file
+        """
+        df = pd.read_csv(csv_path, encoding=encoding, delimiter=delimiter, **kwargs)
+        return df.to_dict(orient="records")
 
     def load_multiple_files(
         self,

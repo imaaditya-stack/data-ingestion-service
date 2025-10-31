@@ -4,9 +4,9 @@ Handles consuming events from Kafka topics using aiokafka
 """
 
 import asyncio
-from typing import Any, Awaitable, Callable, Dict, List
+from typing import Any, Awaitable, Callable, Dict, List, Optional
 
-from aiokafka import AIOKafkaConsumer
+from aiokafka import AIOKafkaConsumer, TopicPartition
 from aiokafka.errors import KafkaError
 
 from src.config.settings import KafkaConfig
@@ -22,7 +22,9 @@ class KafkaConsumerService:
         self,
         config: KafkaConfig,
         topics: List[str],
-        message_handler: Callable[[Dict[str, Any]], Awaitable[None]],
+        message_handler: Callable[
+            [str, Dict[str, Any], Optional[str]], Awaitable[None]
+        ],
     ):
         """
         Initialize Kafka consumer
@@ -30,7 +32,8 @@ class KafkaConsumerService:
         Args:
             config: Kafka configuration
             topics: List of topics to subscribe to
-            message_handler: Async function to handle consumed messages
+            message_handler: Async function to handle consumed messages. Signature:
+                (topic: str, message_value: Dict[str, Any], key: Optional[str]) -> Awaitable[None]
         """
         self.config = config
         self.topics = topics
@@ -85,37 +88,50 @@ class KafkaConsumerService:
                     )
                     raise
 
-    async def _consume_loop(self):
-        """Main consumption loop"""
+    async def _consume_loop(self, timeout_ms: int = 10000, max_records: int = 50):
+        """Main consumption loop using batched fetches via getmany."""
         logger.info("Starting Kafka consumer loop")
 
         try:
-            async for message in self.consumer:
-                if not self.running:
-                    break
+            import json
 
-                try:
-                    import json
+            while self.running:
+                # Fetch batches per assigned partition
+                results = await self.consumer.getmany(
+                    timeout_ms=timeout_ms, max_records=max_records
+                )
 
-                    # Deserialize JSON value
-                    message_value = json.loads(message.value)
+                if not results:
+                    continue
 
-                    logger.info(
-                        f"Received message from topic={message.topic}, partition={message.partition}, offset={message.offset}"
-                    )
+                # Process each partition's batch independently
+                for tp, messages in results.items():
+                    if not messages:
+                        continue
+                    try:
+                        logger.info(
+                            f"Received batch from topic={tp.topic}, partition={tp.partition}, size={len(messages)}"
+                        )
 
-                    # Call the message handler
-                    await self.message_handler(message_value)
+                        for message in messages:
+                            message_value = json.loads(message.value)
+                            await self.message_handler(
+                                message.topic, message_value, message.key
+                            )
 
-                    # Commit offset after successful processing
-                    await self.consumer.commit()
-                    logger.info(
-                        f"Committed offset for topic={message.topic}, partition={message.partition}"
-                    )
+                        # Commit progress only for this partition (offset of next record)
+                        commit_offset = messages[-1].offset + 1
+                        await self.consumer.commit({tp: commit_offset})
+                        logger.info(
+                            f"Committed offset {commit_offset} for topic={tp.topic}, partition={tp.partition}"
+                        )
 
-                except Exception as e:
-                    logger.error(f"Error processing message: {e}", exc_info=True)
-                    # In production, you'd send to DLQ here
+                    except Exception as e:
+                        logger.error(
+                            f"Error processing batch for topic={tp.topic}, partition={tp.partition}: {e}",
+                            exc_info=True,
+                        )
+                        # Skip commit for this partition; message(s) will be retried
 
         except asyncio.CancelledError:
             logger.info("Consumer loop cancelled")

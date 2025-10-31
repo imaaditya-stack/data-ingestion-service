@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Start script for data ingestion service
-# Starts both Kafka and FastAPI together
+# Starts both Kafka and FastAPI services together
 
 set -e
 
-PROJECT_NAME="ingestion_stack"
+PROJECT_NAME="data-ingestion-app"
 
 echo "🚀 Starting Data Ingestion Service..."
 echo ""

@@ -31,7 +31,9 @@ class EmbeddingFactory:
         Raises:
             ValueError: If provider is not supported
         """
-        logger.info(f"Creating embedding model: {config.provider}/{config.model}")
+        logger.info(
+            f"Creating embedding model: {config.provider}/{config.model}/{config.base_url}"
+        )
 
         if config.provider == "ollama":
             return OllamaEmbedding(
