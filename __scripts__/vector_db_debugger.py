@@ -27,7 +27,7 @@ from chromadb.config import Settings
 async def inspect_chromadb():
     """Inspect the contents of ChromaDB and export to CSV"""
 
-    _, collection = VectorStoreFactory.create(VectorStoreConfig())
+    _, collection, _ = VectorStoreFactory.create(VectorStoreConfig())
 
     # Get all documents
     results = collection.get(include=["documents", "metadatas", "embeddings"])
