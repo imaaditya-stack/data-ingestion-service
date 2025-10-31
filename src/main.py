@@ -7,8 +7,12 @@ from llama_index.core import Document
 from pydantic import BaseModel
 
 from src.config.settings import IngestionConfig, KafkaConfig
-from src.core.protocols import MetadataProcessor, TextProcessor
-from src.data_processors.company_processors import (
+from src.core.protocols import TextProcessor, MetadataProcessor
+from src.pipelines.ingestion import DataIngestionPipeline
+from src.services.kafka.kafka_consumer import KafkaConsumerService
+from src.routes.feedback import feedback
+from src.utils.logger import get_logger
+from src.data_processors import (
     CompanyDataProcessor,
     CompanyMetadataProcessor,
 )
@@ -17,9 +21,7 @@ from src.data_processors.product_processors import (
     ProductMetadataProcessor,
 )
 from src.services.ingestion.ingestion_service import IngestionService
-from src.services.kafka.kafka_consumer import KafkaConsumerService
 from src.services.kafka.models import CompanyData, KafkaEvent, ProductData
-from src.utils.logger import get_logger
 
 logger = get_logger("api.main")
 # logger.disabled = True
@@ -170,6 +172,8 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+app.include_router(feedback.router)
 
 
 @app.get("/")
