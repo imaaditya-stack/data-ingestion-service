@@ -55,4 +55,4 @@ echo "✅ All services started!"
 # Show status
 echo "📋 Service Status:"
 docker compose -p "$PROJECT_NAME" ps 2>/dev/null || true
-docker compose -p "$PROJECT_NAME" -f docker-compose.kafka.yml ps
+# docker compose -p "$PROJECT_NAME" -f docker-compose.kafka.yml ps
