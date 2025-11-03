@@ -3,13 +3,29 @@ Pydantic models for Kafka event schema
 """
 
 from datetime import datetime
+from enum import Enum
 from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, Field
 
 
+class OperationType(str, Enum):
+    """CRUD operation types for Kafka events"""
+
+    CREATE = "CREATE"
+    UPDATE = "UPDATE"
+    DELETE = "DELETE"
+
+
+class KafkaTopic(str, Enum):
+    """Kafka topic names"""
+
+    PRODUCT_EVENTS = "product-events"
+    COMPANY_EVENTS = "company-events"
+
+
 class EventMetadata(BaseModel):
-    operation: str = Field(..., description="CRUD operation e.g., CREATE/UPDATE/DELETE")
+    operation: OperationType = Field(..., description="CRUD operation type")
     source: str = Field(..., description="Originating system e.g., django-backend")
 
 

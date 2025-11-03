@@ -104,6 +104,10 @@ class IngestionConfig(BaseModel):
     embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)
     vector_store: VectorStoreConfig = Field(default_factory=VectorStoreConfig)
     chunking: ChunkingConfig = Field(default_factory=ChunkingConfig)
+    dry_run_mode: bool = Field(
+        default_factory=lambda: os.getenv("DRY_RUN_MODE", "false").lower() == "true",
+        description="Dry run mode: adds operation prefix to text for easy verification",
+    )
 
     class Config:
         """Pydantic config"""

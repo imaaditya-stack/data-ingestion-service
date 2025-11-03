@@ -56,10 +56,10 @@ async def demo_add_documents_for_companies():
     documents = load_documents_from_csv(file_path, text_processor, metadata_processor)
 
     # Initialize service
-    service = IngestionService()
+    service = IngestionService.create()
 
     # Add documents
-    nodes = await service.add_documents(documents)
+    nodes = service.add_documents(documents)
     print(f"✅ Added {len(nodes)} documents")
 
     return documents
@@ -79,10 +79,10 @@ async def demo_add_documents_for_products():
     documents = load_documents_from_csv(file_path, text_processor, metadata_processor)
 
     # Initialize service
-    service = IngestionService()
+    service = IngestionService.create()
 
     # Add documents
-    nodes = await service.add_documents(documents)
+    nodes = service.add_documents(documents)
     print(f"✅ Added {len(nodes)} documents")
 
     return documents
@@ -92,7 +92,7 @@ async def demo_update_documents_for_companies(kafka_records: List[Dict[str, Any]
     """Demo: Update existing documents from Kafka-like events"""
     print("\n🔄 Step 2: Updating Documents from Kafka Events")
 
-    service = IngestionService()
+    service = IngestionService.create()
 
     def to_document(topic: str, record: Dict[str, Any]) -> Document:
         event = KafkaEvent(**record)
@@ -141,37 +141,78 @@ async def demo_update_documents_for_companies(kafka_records: List[Dict[str, Any]
         doc = to_document(topic, record)
         updated_documents.append(doc)
 
-    # Update using filter metadata
+    # Update: Delete old documents first, then add new ones
     if updated_documents:
-        # Filter by entity_type and entity_id
+        # Filter by document_id to delete old versions
         filter_metadata = {
-            "id": {
-                "$in": [doc.metadata.get("id") for doc in updated_documents],
+            "document_id": {
+                "$in": [doc.id_ for doc in updated_documents],
             },
         }
-        count = await service.update_documents(updated_documents, filter_metadata)
-        print(f"✅ Updated {count} documents from {len(kafka_records)} Kafka events")
+        # Delete old versions
+        try:
+            service.delete_documents(filter_metadata=filter_metadata)
+            # Add new documents
+            nodes = service.add_documents(updated_documents)
+            print(
+                f"✅ Updated {len(nodes)} documents from {len(kafka_records)} Kafka events"
+            )
+        except Exception as e:
+            print(f"❌ Error updating documents: {e}")
+            raise
 
 
 async def demo_delete_documents_for_companies(kafka_records: List[Dict[str, Any]]):
     """Demo: Delete documents based on Kafka delete events"""
     print("\n🗑️  Step 3: Deleting Documents from Kafka Events")
 
-    service = IngestionService()
+    service = IngestionService.create()
 
     # Delete using metadata from Kafka records
     # Get metadata from first record (assuming all have same entity_type)
 
     if kafka_records:
+        # Convert Kafka records to documents to get document IDs
+        def to_document(record: Dict[str, Any]) -> Document:
+            event = KafkaEvent(**record)
+
+            if event.entity_type == "company":
+                text_processor = CompanyDataProcessor()
+                metadata_processor = CompanyMetadataProcessor()
+            else:
+                text_processor = ProductDataProcessor()
+                metadata_processor = ProductMetadataProcessor()
+
+            data = event.data
+            text = text_processor.process_row(data, list(data.keys()))
+            custom_metadata = metadata_processor.process_metadata(
+                data, list(data.keys())
+            )
+            metadata: Dict[str, Any] = {
+                **custom_metadata,
+                "operation": event.metadata.operation,
+                "source": event.source,
+                "tenant_id": event.tenant_id,
+                "entity_type": event.entity_type,
+                "schema_version": event.schema_version,
+                "event_id": event.event_id,
+            }
+            if event.entity_id is not None:
+                metadata["entity_id"] = event.entity_id
+            doc_id = event.build_document_id()
+            return Document(text=text, metadata=metadata, id_=doc_id)
+
+        # Get document IDs from records
+        delete_documents = [to_document(record) for record in kafka_records]
 
         filter_metadata = {
-            "id": {
-                "$in": [doc.get("data", {}).get("id") for doc in kafka_records],
+            "document_id": {
+                "$in": [doc.id_ for doc in delete_documents],
             },
         }
-        deleted_count = await service.delete_documents_by_metadata(filter_metadata)
+        service.delete_documents(filter_metadata=filter_metadata)
         print(
-            f"✅ Deleted {deleted_count} documents from {len(kafka_records)} Kafka events"
+            f"✅ Deleted {len(delete_documents)} documents from {len(kafka_records)} Kafka events"
         )
 
 
@@ -182,9 +223,9 @@ async def main():
     # Note: Run only one at a time
 
     # Step 1: Add documents from CSV
-    await demo_add_documents_for_companies()
+    # demo_add_documents_for_companies()
 
-    await demo_add_documents_for_products()
+    demo_add_documents_for_products()
 
     # Step 2: Update documents from Kafka-like events
     # Mock Kafka records for update operation
@@ -204,7 +245,7 @@ async def main():
         },
     ]
 
-    # await demo_update_documents_for_companies(kafka_update_records)
+    # demo_update_documents_for_companies(kafka_update_records)
 
     # Step 3: Delete documents from Kafka-like events
     # Uncomment to test delete operation
@@ -217,7 +258,7 @@ async def main():
             "source": "kafka",
         }
     ]
-    # await demo_delete_documents_for_companies(kafka_delete_records)
+    # demo_delete_documents_for_companies(kafka_delete_records)
 
     print("\n✅ All demos completed!")
 

@@ -32,7 +32,7 @@ class QueryPipeline:
         # Initialize providers
         self._embed_model = EmbeddingFactory.create(self.config.embedding)
         self._llm = LLMFactory.create(self.config.llm)
-        self._vector_store, self._collection = VectorStoreFactory.create(
+        self._vector_store, self._collection, _ = VectorStoreFactory.create(
             self.config.vector_store
         )
 

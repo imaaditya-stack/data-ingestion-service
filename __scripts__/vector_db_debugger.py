@@ -4,9 +4,9 @@ Exports detailed analysis to CSV files
 """
 
 import asyncio
+import sys
 from collections import Counter
 from pathlib import Path
-import sys
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]  # adjust depth if needed
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -14,8 +14,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from dotenv import load_dotenv
 
-from src.providers.vector_stores import VectorStoreFactory
 from src.config.settings import VectorStoreConfig
+from src.providers.vector_stores import VectorStoreFactory
 
 load_dotenv()
 
@@ -51,6 +51,8 @@ async def inspect_chromadb():
     # Create detailed document export DataFrame - only 3 documents
     num_docs_to_export = min(3, total_docs)
     document_rows = []
+
+    # print(results["ids"])
     for i in range(num_docs_to_export):
         doc_text = results["documents"][i] if i < len(results["documents"]) else ""
         metadata = results["metadatas"][i] if i < len(results["metadatas"]) else {}
