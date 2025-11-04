@@ -1,27 +1,33 @@
 #!/bin/bash
 
-# Start script for data ingestion service
-# Starts both Kafka and FastAPI services together
+# Start script for AI Backend and Data Ingestion Consumer
+# Spins up Kafka (if not running), Vector DB, API, and Kafka Consumer
 
 set -e
 
-PROJECT_NAME="data-ingestion-app"
+# Load .env variables
+if [ -f .env ]; then
+  export $(grep -v '^#' .env | xargs)
+else
+  echo "❌ .env file not found!"
+  exit 1
+fi
 
-echo "🚀 Starting Data Ingestion Service..."
+echo "🚀 Starting AI Platform Services..."
 echo ""
 
 # Ensure Kafka network exists
-echo "🔍 Checking for kafka-net network..."
-if ! docker network inspect kafka-net >/dev/null 2>&1; then
-  echo "📦 Creating kafka-net network..."
-  docker network create kafka-net
+echo "🔍 Checking for $NETWORK_NAME network..."
+if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
+  echo "📦 Creating $NETWORK_NAME network..."
+  docker network create "$NETWORK_NAME"
 else
-  echo "✅ Kafka network already exists"
+  echo "✅ $NETWORK_NAME network already exists"
 fi
 
-# Start Kafka first
+# Start Kafka stack first (defined in docker-compose.kafka.yml)
 echo ""
-echo "📦 Starting Kafka and Kafka UI..."
+echo "📦 Starting Kafka & Kafka UI..."
 docker compose -p "$PROJECT_NAME" -f docker-compose.kafka.yml up -d
 
 # Wait for Kafka to be ready
@@ -30,9 +36,10 @@ echo "⏳ Waiting for Kafka to be ready..."
 max_wait=30
 wait_time=0
 
-while ! docker exec kafka-local /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka:29092 >/dev/null 2>&1; do
+while ! docker exec kafka-local /opt/kafka/bin/kafka-broker-api-versions.sh \
+  --bootstrap-server kafka:29092 >/dev/null 2>&1; do
   if [ $wait_time -ge $max_wait ]; then
-    echo "⚠️  Kafka taking too long to respond, but continuing..."
+    echo "⚠️  Kafka is taking too long, continuing..."
     break
   fi
   echo "   Waiting for Kafka... (${wait_time}s/${max_wait}s)"
@@ -44,15 +51,15 @@ if [ $wait_time -lt $max_wait ]; then
   echo "✅ Kafka is ready!"
 fi
 
-# Start FastAPI
+# Start vector DB, API, and consumer containers
 echo ""
-echo "📦 Starting FastAPI ingestion API..."
-docker compose -p "$PROJECT_NAME" up -d
+echo "📦 Starting AI Backend, Vector DB & Kafka Consumer..."
+docker compose -p "$PROJECT_NAME" up -d vector-database ai-backend kafka-consumer-for-data-ingestion
 
 echo ""
-echo "✅ All services started!"
+echo "✅ All services started successfully!"
+echo ""
 
 # Show status
 echo "📋 Service Status:"
-docker compose -p "$PROJECT_NAME" ps 2>/dev/null || true
-# docker compose -p "$PROJECT_NAME" -f docker-compose.kafka.yml ps
+docker compose -p "$PROJECT_NAME" ps

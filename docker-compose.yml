@@ -1,9 +1,40 @@
+x-common-environment: &common-environment # Kafka Configuration
+  KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+  # Vector Store Configuration
+  VECTOR_DB_PATH: /app/data/chroma_db
+  VECTOR_DB_USE_REMOTE: true
+  VECTOR_DB_REMOTE_HOST: vector-database
+  VECTOR_DB_REMOTE_PORT: 8000
+  COLLECTION_NAME: networking-platform
+
+  # Ollama (for embeddings)
+  OLLAMA_BASE_URL: http://host.docker.internal:11434
+
+  DRY_RUN_MODE: true
+
+x-common-service: &common-service
+  build:
+    context: .
+    dockerfile: Dockerfile
+  volumes:
+    - ./src:/app/src
+  networks:
+    - kafka-net
+  restart: unless-stopped
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  environment:
+    <<: *common-environment
+  depends_on:
+    - vector-database
+
 services:
-  chromadb:
+  vector-database:
     image: chromadb/chroma:latest
-    container_name: chromadb
+    container_name: vector-database
     ports:
-      - "8001:8000" # Expose Chroma API externally if needed
+      - "8001:8000"
     environment:
       - IS_PERSISTENT=TRUE
       - ANONYMIZED_TELEMETRY=FALSE
@@ -20,34 +51,16 @@ services:
       retries: 3
       start_period: 30s
 
-  data-ingestion-service:
-    container_name: data-ingestion-service
-    build:
-      context: .
-      dockerfile: Dockerfile
+  ai-backend:
+    <<: *common-service
+    container_name: ai-backend
     ports:
       - "8000:8000"
-    environment:
-      # Kafka Configuration
-      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
 
-      # Vector Store Configuration
-      VECTOR_DB_PATH: /app/data/chroma_db
-      VECTOR_DB_USE_REMOTE: true
-      VECTOR_DB_REMOTE_HOST: chromadb
-      VECTOR_DB_REMOTE_PORT: 8000
-      COLLECTION_NAME: networking-platform
-      OLLAMA_BASE_URL: http://host.docker.internal:11434
-      DRY_RUN_MODE: true
-    volumes:
-      - ./src:/app/src
-    depends_on:
-      - chromadb
-    networks:
-      - kafka-net
-    restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+  kafka-consumer-for-data-ingestion:
+    <<: *common-service
+    container_name: kafka-consumer-for-data-ingestion
+    command: ["python", "-m", "src.kafka_consumer_runner"]
 
 networks:
   kafka-net:
