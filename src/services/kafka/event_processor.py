@@ -103,24 +103,20 @@ class EventProcessor:
 
             # DELETE: Batch delete by document IDs
             if delete_docs:
-                filter_metadata = {
-                    "document_id": {"$in": [document.id_ for document in delete_docs]}
-                }
                 await self.ingestion_service.delete_documents(
-                    filter_metadata=filter_metadata
+                    ids=[document.id_ for document in delete_docs]
                 )
 
             # UPDATE: Sequential delete + add (must be sequential to avoid race conditions)
             if update_docs:
-                filter_metadata = {
-                    "document_id": {"$in": [document.id_ for document in update_docs]}
-                }
                 # Delete old versions by ID
                 try:
                     await self.ingestion_service.delete_documents(
-                        filter_metadata=filter_metadata
+                        ids=[document.id_ for document in update_docs]
                     )
-                    await asyncio.sleep(0.3)  # Added to let operation complete properly
+                    await asyncio.sleep(
+                        0.3
+                    )  # Added a delay to let operation complete properly before we add
                     # Add new documents
                     await self.ingestion_service.add_documents(update_docs)
                 except Exception as e:

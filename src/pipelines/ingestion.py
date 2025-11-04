@@ -75,7 +75,9 @@ class DataIngestionPipeline:
         """Create the ingestion pipeline with transformations"""
         return IngestionPipeline(
             transformations=[
-                SimpleNodeParser(),
+                # LLAMA INDEX Node Parser generates UUID for vector store id,
+                # Hence we need to override the behavior by passing id_func.
+                SimpleNodeParser(id_func=lambda idx, doc: doc.id_),
                 self._embed_model,
             ],
             vector_store=self._vector_store,

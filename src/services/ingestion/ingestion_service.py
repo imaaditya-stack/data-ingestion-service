@@ -6,6 +6,7 @@ Business logic orchestrator for document operations: add, update, delete
 import asyncio
 from typing import Any, Dict, List, Optional
 
+from chromadb import IDs, Where, WhereDocument
 from chromadb.api.models.AsyncCollection import AsyncCollection
 from llama_index.core import Document
 
@@ -73,15 +74,14 @@ class IngestionService:
         Returns:
             List of Document objects that need to be ingested
         """
+        # print(documents)
         documents_to_ingest = []
         existing_documents = self.chroma_collection.get(
-            where={"document_id": {"$in": [document.id_ for document in documents]}},
+            ids=[document.id_ for document in documents],
+            # where={"document_id": {"$in": [document.id_ for document in documents]}},
             include=["metadatas"],
         )
-        existing_document_ids = [
-            document.get("document_id")
-            for document in existing_documents.get("metadatas")
-        ]
+        existing_document_ids = existing_documents["ids"]
         if not existing_document_ids:
             logger.info("No existing documents found")
             documents_to_ingest = documents
@@ -141,9 +141,11 @@ class IngestionService:
 
     async def delete_documents(
         self,
-        document_ids: List[str] = None,
-        filter_metadata: Optional[Dict[str, Any]] = None,
         max_retries: int = 3,
+        *,
+        ids: IDs | None = None,
+        where: Where | None = None,
+        where_document: WhereDocument | None = None,
     ) -> bool:
         """
         Delete documents by their IDs.
@@ -159,8 +161,9 @@ class IngestionService:
 
         for attempt in range(max_retries + 1):
             try:
-                # Use ChromaDB collection to delete by IDs
-                self.chroma_collection.delete(ids=document_ids, where=filter_metadata)
+                self.chroma_collection.delete(
+                    ids=ids, where=where, where_document=where_document
+                )
                 logger.info(f"Successfully deleted documents")
                 return True
             except Exception as e:

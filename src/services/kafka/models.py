@@ -40,14 +40,12 @@ class KafkaEvent(BaseModel):
     @property
     def entity_id(self) -> Optional[str]:
         value = self.data.get("id") if isinstance(self.data, dict) else None
-        return str(value) if value is not None else None
+        if not value:
+            raise ValueError(f"Entity id is not provided for {self.event_id}")
+        return str(value)
 
-    def build_document_id(self, entity_type: Optional[str] = None) -> str:
-        if self.entity_id:
-            if entity_type:
-                return f"{self.tenant_id}_{entity_type}_{self.entity_id}"
-            return f"{self.tenant_id}_{self.entity_id}"
-        return f"{self.tenant_id}_{self.event_id}"
+    def build_document_id(self, entity_type: str) -> str:
+        return f"{self.tenant_id}_{entity_type}_{self.entity_id}"
 
 
 class ProductData(BaseModel):

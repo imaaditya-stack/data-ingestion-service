@@ -45,8 +45,7 @@ class EmbeddingFactory:
         #         model=config.model,
         #         api_key=config.api_key,
         #     )
-        else:
-            raise ValueError(f"Unsupported embedding provider: {config.provider}")
+        raise ValueError(f"Unsupported embedding provider: {config.provider}")
 
     @staticmethod
     def create_ollama(model: str, base_url: str) -> BaseEmbedding:
