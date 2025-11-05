@@ -19,6 +19,8 @@ x-common-service: &common-service
     dockerfile: Dockerfile
   volumes:
     - ./src:/app/src
+    - ./alembic:/app/alembic
+    - ./alembic.ini:/app/alembic.ini
   networks:
     - kafka-net
   restart: unless-stopped
@@ -28,6 +30,7 @@ x-common-service: &common-service
     <<: *common-environment
   depends_on:
     - vector-database
+    - rdbms-database
 
 services:
   vector-database:
@@ -56,11 +59,35 @@ services:
     container_name: ai-backend
     ports:
       - "8000:8000"
+    environment:
+      <<: *common-environment
+      DATABASE_URL: mysql+aiomysql://${MYSQL_USER}:${MYSQL_PASSWORD}@rdbms-database:3306/${MYSQL_DATABASE}
 
   kafka-consumer-for-data-ingestion:
     <<: *common-service
     container_name: kafka-consumer-for-data-ingestion
     command: ["python", "-m", "src.kafka_consumer_runner"]
+
+  rdbms-database:
+    image: mysql:lts
+    container_name: rdbms-database
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - kafka-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 networks:
   kafka-net:

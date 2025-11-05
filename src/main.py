@@ -1,10 +1,15 @@
 from contextlib import asynccontextmanager
+import os
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
+
 load_dotenv()
 
+from src.database import db
+from src.services.feedback.feedback_service import FeedbackService
+from src.routes.feedback import feedback
 from src.utils.logger import get_logger
 
 logger = get_logger("api.main")
@@ -14,11 +19,18 @@ class AppContext:
     """Manages application lifecycle and service initialization"""
 
     def __init__(self):
-        pass
+        self.feedback_service = FeedbackService()
 
     async def startup(self):
         """Startup application services"""
         logger.info("Starting FastAPI Application")
+
+        # Create manager and optionally auto-create tables in non-prod envs
+        await db.startup(
+            db_url=os.getenv("DATABASE_URL"),
+            auto_create_tables=(os.getenv("AUTO_CREATE_TABLES") == "true"),
+            create_table_retries=3,
+        )
 
     async def shutdown(self):
         """Shutdown application services"""
@@ -32,6 +44,10 @@ async def lifespan(app: FastAPI):
     """Lifespan manager for FastAPI app"""
     app_context = AppContext()
     await app_context.startup()
+
+    # Add feedback service to the FastAPI App State
+    app.state.feedback_service = app_context.feedback_service
+
     try:
         yield
     finally:
@@ -44,6 +60,8 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+app.include_router(feedback.router)
 
 
 @app.get("/")

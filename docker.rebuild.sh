@@ -16,7 +16,7 @@ echo ""
 
 # 1️⃣ Ensure existing containers are stopped
 echo "🛑 Ensuring old services are stopped..."
-docker compose -p "$PROJECT_NAME" -f docker-compose.yml down --remove-orphans || true
+./dev.stop.sh
 
 # Uncomment below if you want to rebuild Kafka stack as well
 # echo ""
@@ -35,4 +35,4 @@ echo "🚀 Launching all services..."
 
 echo ""
 echo "✅ Rebuild and startup complete!"
-docker compose -p "$PROJECT_NAME" ps
+

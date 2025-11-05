@@ -1,0 +1,74 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pkl
+*.log
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+
+# --- Byte-compiled / cache ---
+*.sqlite3
+*.db
+instance/
+*.egg-info/
+.eggs/
+
+# --- Environment & configs ---
+.env
+.env.*
+*.ini
+*.yaml
+*.yml
+*.toml
+
+# --- IDE / Editor files ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# --- Git / Version control ---
+.git/
+.gitignore
+.gitattributes
+
+# --- Docker / Compose ---
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# --- Tests & coverage ---
+tests/
+coverage/
+htmlcov/
+.coverage
+.pytest_cache/
+.tox/
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Build / Dist files ---
+build/
+dist/
+docs/_build/
+site/
+*.egg
+*.whl
+
+# --- Node (if you have frontend assets) ---
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# --- Migrations cache ---
+migrations/__pycache__/
+migrations/*.pyc

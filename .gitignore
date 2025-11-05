@@ -85,3 +85,4 @@ chroma_db/
 chroma_data/
 
 *.json
+mysql_data/
