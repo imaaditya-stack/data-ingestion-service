@@ -1,23 +1,26 @@
 from typing import Annotated, AsyncGenerator
+
+from fastapi import Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Depends, HTTPException, status, Request
 
 from src.database.db import (
-    get_db_session,
     DatabaseConnectionError,
     DatabaseSessionError,
+    get_session_manager,
 )
 from src.services.feedback.feedback_service import FeedbackService
+from src.services.tenant.onboarding_service import TenantOnboardingService
 
 
 # Create FastAPI DB Dependency
 async def get_safe_db_session() -> AsyncGenerator[AsyncSession, None]:
     """
     Provides a safe AsyncSession dependency for FastAPI routes.
-    Wraps get_db_session() to translate internal DB errors into HTTP exceptions.
+    Translates internal DB errors into HTTP exceptions.
     """
+    manager = get_session_manager()
     try:
-        async for db in get_db_session():
+        async with manager.session() as db:
             yield db
     except DatabaseConnectionError as e:
         raise HTTPException(
@@ -29,8 +32,6 @@ async def get_safe_db_session() -> AsyncGenerator[AsyncSession, None]:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Database session error: {str(e)}",
         )
-    except Exception as e:
-        raise e
 
 
 # Create FastAPI Feedback Service Dependency
@@ -44,6 +45,15 @@ async def get_feedback_service(request: Request) -> FeedbackService:
         )
 
 
+# Create FastAPI Tenant Onboarding Service Dependency
+def get_tenant_onboarding_service() -> TenantOnboardingService:
+    """Provides TenantOnboardingService dependency"""
+    return TenantOnboardingService()
+
+
 # FastAPI Dependency Injection
 DBSessionDep = Annotated[AsyncSession, Depends(get_safe_db_session)]
 FeedbackServiceDep = Annotated[FeedbackService, Depends(get_feedback_service)]
+TenantOnboardingServiceDep = Annotated[
+    TenantOnboardingService, Depends(get_tenant_onboarding_service)
+]

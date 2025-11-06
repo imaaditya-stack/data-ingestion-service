@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from src.core.dependencies import DBSessionDep, FeedbackServiceDep
+
 from .schemas import StoreFeedbackRequest
 
 router = APIRouter(prefix="/feedback", tags=["Feedback"])

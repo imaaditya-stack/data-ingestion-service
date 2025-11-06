@@ -17,9 +17,10 @@ from __future__ import annotations
 import asyncio
 import os
 from contextlib import asynccontextmanager
-from typing import Any, AsyncIterator, Optional, Mapping
+from typing import Any, AsyncIterator, Mapping, Optional
 
 from sqlalchemy import text
+from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -27,8 +28,6 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 from sqlalchemy.orm import declarative_base
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.engine import make_url
 
 from src.utils.logger import get_logger
 
@@ -275,8 +274,9 @@ class DatabaseSessionManager:
                 await db.execute(...)
 
         Behavior:
-            - Rolls back on SQLAlchemyError or other Exceptions
+            - Rolls back on any Exception
             - Logs exceptions with context
+            - Does NOT auto-commit (call await db.commit() explicitly)
             - Does NOT call await db.close(); the session context manager handles cleanup.
         Raises:
             DatabaseSessionError if an unexpected error occurs while managing the session.
@@ -289,27 +289,16 @@ class DatabaseSessionManager:
             async with self._sessionmaker() as db:
                 try:
                     yield db
-                except SQLAlchemyError as e:
-                    logger.exception(
-                        "DB session SQLAlchemyError for %s: %s", self._masked_url, e
-                    )
-                    # rollback to avoid partial transactions
-                    try:
-                        await db.rollback()
-                    except Exception:
-                        logger.exception(
-                            "Failed to rollback DB session for %s", self._masked_url
-                        )
-                    raise
                 except Exception as e:
-                    logger.exception(
-                        "DB session unexpected error for %s: %s", self._masked_url, e
-                    )
+                    # Rollback on any exception to avoid partial transactions
+                    logger.exception("DB session error for %s: %s", self._masked_url, e)
                     try:
                         await db.rollback()
-                    except Exception:
+                    except Exception as rollback_error:
                         logger.exception(
-                            "Failed to rollback DB session for %s", self._masked_url
+                            "Failed to rollback DB session for %s: %s",
+                            self._masked_url,
+                            rollback_error,
                         )
                     raise
                 # context manager closes session automatically; do NOT await db.close()
@@ -395,17 +384,4 @@ async def shutdown() -> None:
         logger.debug("shutdown() called but session manager was not initialized.")
 
 
-# ----- FastAPI dependency helper -----
-async def get_db_session():
-    """
-    FastAPI dependency to yield an AsyncSession.
-
-    Example in a route:
-
-        @router.get("/items")
-        async def list_items(db: AsyncSession = Depends(get_db_session)):
-            result = await db.execute(...)
-    """
-    manager = get_session_manager()
-    async with manager.session() as db:
-        yield db
+# Note: get_db_session() was removed - use get_safe_db_session() from dependencies.py instead
