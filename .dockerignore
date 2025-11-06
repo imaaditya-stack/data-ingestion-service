@@ -25,7 +25,7 @@ instance/
 *.ini
 *.yaml
 *.yml
-*.toml
+# Note: pyproject.toml is needed for Docker build, so *.toml is not excluded
 
 # --- IDE / Editor files ---
 .vscode/

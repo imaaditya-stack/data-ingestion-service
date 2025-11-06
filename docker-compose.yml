@@ -7,6 +7,7 @@ x-common-environment: &common-environment # Kafka Configuration
   VECTOR_DB_REMOTE_HOST: vector-database
   VECTOR_DB_REMOTE_PORT: 8000
   COLLECTION_NAME: networking-platform
+  ENCRYPTION_KEY: ${ENCRYPTION_KEY}
 
   # Ollama (for embeddings)
   OLLAMA_BASE_URL: http://host.docker.internal:11434
