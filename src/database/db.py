@@ -382,6 +382,3 @@ async def shutdown() -> None:
             logger.exception("Error occurred during DB shutdown.")
     else:
         logger.debug("shutdown() called but session manager was not initialized.")
-
-
-# Note: get_db_session() was removed - use get_safe_db_session() from dependencies.py instead

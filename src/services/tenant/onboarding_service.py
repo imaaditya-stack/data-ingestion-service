@@ -124,8 +124,8 @@ class TenantOnboardingService:
             db.add(tenant)
 
             await db.commit()
-
             await db.refresh(tenant)
+
             logger.info(
                 f"Tenant created successfully: id={tenant.id}, tenant_id={tenant_id}"
             )
