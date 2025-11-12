@@ -54,7 +54,9 @@ fi
 # Start vector DB, API, and consumer containers
 echo ""
 echo "📦 Starting AI Backend, Vector DB & Kafka Consumer..."
-docker compose -p "$PROJECT_NAME" up -d ai-backend 
+# docker compose -p "$PROJECT_NAME" up -d ai-backend 
+docker compose -p "$PROJECT_NAME" up -d
+
 
 echo ""
 echo "✅ All services started successfully!"

@@ -2,6 +2,7 @@
 Advanced Query Service with full granular control
 """
 
+import asyncio
 import time
 from typing import Callable, Dict, List, Optional
 
@@ -14,6 +15,7 @@ from llama_index.core.schema import NodeWithScore
 from llama_index.core.vector_stores import MetadataFilters
 
 from src.pipelines.query import QueryPipeline
+from src.services.vector_store_manager import get_tenant_vector_store_manager_sync
 from src.utils.logger import get_logger
 
 from .configs import (
@@ -74,9 +76,9 @@ class QueryEngineService:
         self.pipeline_factory = pipeline_factory
 
         # Get components from pipeline
-        self.vector_store = pipeline_factory.vector_store
         self.embed_model = pipeline_factory.embed_model
         self.llm = pipeline_factory.llm
+        self.vector_store = pipeline_factory.vector_store
 
         # Configs
         self.retrieval_config = retrieval_config or RetrievalConfig()
@@ -84,11 +86,13 @@ class QueryEngineService:
         self.rerank_config = rerank_config or RerankConfig()
         self.synthesis_config = synthesis_config or SynthesisConfig()
 
-        # Create index
-        self.index = VectorStoreIndex.from_vector_store(
+        self._tenant_manager = get_tenant_vector_store_manager_sync()
+        self._default_index = VectorStoreIndex.from_vector_store(
             vector_store=self.vector_store,
             embed_model=self.embed_model,
         )
+        self._indexes: Dict[str, VectorStoreIndex] = {}
+        self._locks: Dict[str, asyncio.Lock] = {}
 
         # Custom post-processors at different stages
         self.post_processors: Dict[str, List[Callable]] = {
@@ -104,6 +108,7 @@ class QueryEngineService:
     async def retrieve(
         self,
         query: str,
+        tenant_id: Optional[str] = None,
         top_k: Optional[int] = None,
         metadata_filters: Optional[MetadataFilters] = None,
     ) -> RetrievalResult:
@@ -123,10 +128,16 @@ class QueryEngineService:
         if top_k is None:
             top_k = self.retrieval_config.default_top_k
 
-        logger.info(f"Retrieving top {top_k} nodes for query: {query[:50]}...")
+        logger.info(
+            "Retrieving top %s nodes for tenant=%s query=%s...",
+            top_k,
+            tenant_id or "<default>",
+            query[:50],
+        )
 
-        # Create retriever
-        retriever = self.index.as_retriever(
+        index = await self._get_index_for_tenant(tenant_id)
+
+        retriever = index.as_retriever(
             similarity_top_k=top_k,
             filters=metadata_filters,
         )
@@ -354,6 +365,7 @@ class QueryEngineService:
     async def query(
         self,
         query: str,
+        tenant_id: Optional[str] = None,
         top_k: Optional[int] = None,
         score_threshold: Optional[float] = None,
         rerank: bool = False,
@@ -384,6 +396,7 @@ class QueryEngineService:
 
         # Stage 1: Retrieve
         retrieval_result = await self.retrieve(
+            tenant_id=tenant_id,
             query=query,
             top_k=top_k,
             metadata_filters=metadata_filters,
@@ -457,3 +470,23 @@ class QueryEngineService:
         # Placeholder for score fusion logic
         # Could combine semantic similarity with metadata-based scoring
         return sorted(nodes, key=lambda x: x.score, reverse=True)
+
+    async def _get_index_for_tenant(self, tenant_id: Optional[str]) -> VectorStoreIndex:
+        if not tenant_id:
+            return self._default_index
+
+        if tenant_id in self._indexes:
+            return self._indexes[tenant_id]
+
+        lock = self._locks.setdefault(tenant_id, asyncio.Lock())
+        async with lock:
+            if tenant_id in self._indexes:
+                return self._indexes[tenant_id]
+
+            resources = await self._tenant_manager.get_resources(tenant_id)
+            index = VectorStoreIndex.from_vector_store(
+                vector_store=resources.vector_store,
+                embed_model=self.embed_model,
+            )
+            self._indexes[tenant_id] = index
+            return index

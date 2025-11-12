@@ -1,8 +1,8 @@
 import asyncio
-
-from llama_index.core.vector_stores import ExactMatchFilter, MetadataFilters
 import sys
 from pathlib import Path
+
+from llama_index.core.vector_stores import ExactMatchFilter, MetadataFilters
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]  # adjust depth if needed
 sys.path.insert(0, str(PROJECT_ROOT))

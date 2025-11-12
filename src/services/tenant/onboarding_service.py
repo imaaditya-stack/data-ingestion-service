@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.config.settings import VectorStoreConfig
 from src.database.models import OnboardingStatus, Tenant
 from src.services.security.encryption_service import EncryptionService
+from src.services.vector_store_manager import get_tenant_vector_store_manager_sync
 from src.utils.logger import get_logger
 from src.utils.secret_generator import generate_secret_key
 
@@ -39,7 +40,7 @@ class TenantOnboardingService:
         self.encryption_service = encryption_service or EncryptionService()
         logger.info("TenantOnboardingService initialized")
 
-    def _generate_default_config(self) -> Dict[str, Any]:
+    def _generate_default_config(self, tenant_identifier: str) -> Dict[str, Any]:
         """
         Generate default configuration for tenant.
 
@@ -50,12 +51,30 @@ class TenantOnboardingService:
             Dictionary with default configuration
         """
         vector_config = VectorStoreConfig()
+        manager = get_tenant_vector_store_manager_sync()
+        database_name = manager.generate_database_name(tenant_identifier)
+        collection_name = vector_config.collection_name
+
+        manager.ensure_database(
+            database=database_name,
+            tenant=vector_config.admin_tenant,
+            create=True,
+        )
+        manager.register_tenant_settings(
+            tenant_identifier,
+            database=database_name,
+            collection=collection_name,
+            tenant=vector_config.admin_tenant,
+        )
+
         return {
             "vector_store": {
-                "collection_name": vector_config.collection_name,
+                "collection_name": collection_name,
                 "use_remote": vector_config.use_remote,
                 "remote_host": vector_config.remote_host,
                 "remote_port": vector_config.remote_port,
+                "tenant": vector_config.admin_tenant,
+                "database": database_name,
             }
         }
 
@@ -108,7 +127,7 @@ class TenantOnboardingService:
         logger.debug("Encrypted secret keys")
 
         # Generate default configuration
-        default_config = self._generate_default_config()
+        default_config = self._generate_default_config(tenant_id)
 
         # Create tenant record
         tenant = Tenant(
