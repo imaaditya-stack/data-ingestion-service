@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from src.config.settings import IngestionConfig, KafkaConfig
+from src.database.db import create_session_manager
 from src.services.ingestion.ingestion_service import IngestionService
 from src.services.kafka.entity_router import EntityRouter
 from src.services.kafka.event_parser import EventParser
@@ -12,6 +13,7 @@ from src.services.kafka.event_processor import EventProcessor
 from src.services.kafka.kafka_consumer import KafkaConsumerService
 from src.services.kafka.models import KafkaTopic
 
+create_session_manager()
 
 ingestion_config = IngestionConfig.create_default()
 ingestion_service = IngestionService.create(config=ingestion_config)

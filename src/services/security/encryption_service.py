@@ -38,8 +38,6 @@ class EncryptionService:
         """
         key = encryption_key or os.getenv("ENCRYPTION_KEY")
 
-        print(f"Encryption key: {key}")
-
         if not key:
             # In production, this should raise an error
             # For development, we can generate a key (but warn)

@@ -143,6 +143,10 @@ with st.container():
         placeholder="e.g. Laser cutting systems or companies in Bangalore",
         label_visibility="collapsed",
     )
+    tenant_identifier = st.text_input(
+        "🏢 Tenant ID:",
+        placeholder="tenant_123",
+    )
 
     col1, col2, col3 = st.columns([2, 1, 1])
     with col1:
@@ -165,6 +169,8 @@ with st.container():
 if search_button:
     if not query_text.strip():
         st.warning("⚠️ Please enter a valid query.")
+    elif not tenant_identifier.strip():
+        st.warning("⚠️ Please enter a tenant ID.")
     else:
         with st.spinner("Searching the network..."):
             try:
@@ -182,6 +188,7 @@ if search_button:
                 # Perform retrieval
                 retrieval_result = run_async(
                     query_service.retrieve(
+                        tenant_id=tenant_identifier.strip(),
                         query=query_text,
                         top_k=n_results,
                         metadata_filters=metadata_filters,

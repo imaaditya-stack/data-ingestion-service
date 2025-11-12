@@ -6,6 +6,13 @@ from pydantic import BaseModel, Field, field_validator
 
 load_dotenv()
 
+try:
+    from chromadb import DEFAULT_TENANT as CHROMA_DEFAULT_TENANT
+except (
+    ImportError
+):  # pragma: no cover - chromadb may not be installed in some environments
+    CHROMA_DEFAULT_TENANT = "default_tenant"
+
 
 class EmbeddingConfig(BaseModel):
     """Configuration for embedding models"""
@@ -66,6 +73,19 @@ class VectorStoreConfig(BaseModel):
     )
     remote_port: Optional[int] = Field(
         default_factory=lambda: os.getenv("VECTOR_DB_REMOTE_PORT")
+    )
+    admin_tenant: str = Field(
+        default_factory=lambda: os.getenv(
+            "VECTOR_DB_ADMIN_TENANT", CHROMA_DEFAULT_TENANT
+        )
+    )
+    database_prefix: str = Field(
+        default_factory=lambda: os.getenv("VECTOR_DB_DATABASE_PREFIX", "tenant-db")
+    )
+    api_impl: str = Field(
+        default_factory=lambda: os.getenv(
+            "VECTOR_DB_API_IMPL", "chromadb.api.fastapi.FastAPI"
+        )
     )
 
 

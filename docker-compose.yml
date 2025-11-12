@@ -68,6 +68,9 @@ services:
     <<: *common-service
     container_name: kafka-consumer-for-data-ingestion
     command: ["python", "-m", "src.kafka_consumer_runner"]
+    environment:
+      <<: *common-environment
+      DATABASE_URL: mysql+aiomysql://${MYSQL_USER}:${MYSQL_PASSWORD}@rdbms-database:3306/${MYSQL_DATABASE}
 
   rdbms-database:
     image: mysql:lts

@@ -3,6 +3,8 @@ Simple validation script for security services.
 Tests encryption/decryption and HMAC signature generation/verification.
 """
 
+import asyncio
+import os
 import sys
 from pathlib import Path
 
@@ -14,6 +16,7 @@ from datetime import datetime, timezone
 from src.services.kafka.models import EventMetadata, KafkaEvent, OperationType
 from src.services.security.encryption_service import EncryptionService
 from src.services.security.hmac_service import HMACService
+from src.services.security.tenant_secret_manager import TenantSecretManager
 from src.utils.logger import get_logger
 from src.utils.secret_generator import generate_secret_key
 
@@ -82,6 +85,35 @@ def test_hmac_with_wrong_key():
     return False
 
 
+def test_tenant_hmac_flow():
+    """Validate HMAC generation/verification using stored tenant secrets."""
+    tenant_id = os.getenv("TEST_TENANT_ID")
+    if not tenant_id:
+        logger.info(
+            "Skipping tenant HMAC verification (set TEST_TENANT_ID to enable this test)"
+        )
+        return True
+
+    async def _run():
+        manager = TenantSecretManager()
+        secrets = await manager.get_secrets(tenant_id)
+        payload = event.model_dump(mode="json")
+        signature = HMACService.generate_signature(secrets.primary, payload)
+        is_valid, key_used = HMACService.verify_signature_with_fallback(
+            primary_key=secrets.primary,
+            secondary_key=secrets.secondary,
+            payload=payload,
+            provided_signature=signature,
+        )
+        assert is_valid, "Tenant HMAC verification failed"
+        logger.info(
+            "✓ Tenant HMAC verification succeeded using %s key", key_used.upper()
+        )
+
+    asyncio.run(_run())
+    return True
+
+
 def main():
     """Run all validation tests"""
     logger.info("=" * 50)
@@ -92,6 +124,7 @@ def main():
         # test_encryption_service()
         # test_hmac_service()
         test_hmac_with_wrong_key()
+        test_tenant_hmac_flow()
 
         return 0
     except AssertionError as e:
